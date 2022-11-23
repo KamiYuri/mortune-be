@@ -9,12 +9,12 @@ class VerifyCsrfToken extends Middleware
     /**
      * The URIs that should be excluded from CSRF verification.
      *
-     * TODO delete this
      *
      * @var array<int, string>
      */
     protected $except = [
-        //
-        'http://127.0.0.1:8000/*'
+        //TODO fix that (delete)
+        'http://127.0.0.1:8000/*',
+        'http://localhost:8000/*'
     ];
 }

@@ -17,7 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [LogoutController::class, 'logout']);
-
     Route::resource('/task', TaskController::class);
 });
