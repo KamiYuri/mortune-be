@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('card_lists', function (Blueprint $table) {
-            $table->integer('id', true);
+            $table->id();
             $table->string('title', 25);
-            $table->integer('board_id')->index('List__Board___fk');
+            $table->unsignedBigInteger('board_id')->index('List__Board___fk');
             $table->boolean('archived')->default(false);
+            $table->timestamps();
         });
     }
 

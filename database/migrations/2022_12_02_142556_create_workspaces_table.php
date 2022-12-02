@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('workspaces', function (Blueprint $table) {
+            $table->id();
             $table->string('name', 25);
-            $table->integer('owner_id')->index('Workspace__Owner___fk');
-            $table->integer('id', true);
-            $table->string('description', 65535)->nullable();
+            $table->unsignedBigInteger('owner_id')->index('Workspace__Owner___fk');
+            $table->string('description', 255)->nullable();
+            $table->timestamps();
         });
     }
 

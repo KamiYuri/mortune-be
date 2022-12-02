@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -25,5 +26,11 @@ class User extends Model
     public function workspaces(): HasMany
     {
         return $this->hasMany('App\Models\Workspace', 'owner_id');
+    }
+
+    public function boards(): BelongsToMany
+    {
+        return $this->belongsToMany(Board::class, "board_member", "member_id", "board_id")
+            ->withTimestamps();
     }
 }

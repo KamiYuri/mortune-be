@@ -24,7 +24,7 @@ class Workspace extends Model
     /**
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function owner(): BelongsTo
     {
         return $this->belongsTo('App\Models\User', 'owner_id');
     }

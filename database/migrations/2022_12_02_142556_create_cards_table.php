@@ -14,13 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cards', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->integer('list_id')->index('Card__List___fk');
+            $table->id();
+            $table->unsignedBigInteger('list_id')->index('Card__List___fk');
             $table->boolean('archived')->default(false);
-            $table->string('description', 65535)->nullable();
+            $table->text('description')->nullable();
             $table->string('due', 0)->nullable();
             $table->boolean('due_complete')->nullable();
             $table->string('title', 25);
+            $table->timestamps();
         });
     }
 
