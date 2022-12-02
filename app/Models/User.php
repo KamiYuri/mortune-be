@@ -2,43 +2,28 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
+/**
+ * @property integer $id
+ * @property string $username
+ * @property string $password
+ * @property string $email
+ * @property Workspace[] $workspaces
+ */
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    /**
+     * @var array
+     */
+    protected $fillable = ['username', 'password', 'email'];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * @return HasMany
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function workspaces(): HasMany
+    {
+        return $this->hasMany('App\Models\Workspace', 'owner_id');
+    }
 }
