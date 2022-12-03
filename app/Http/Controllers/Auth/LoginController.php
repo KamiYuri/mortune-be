@@ -66,7 +66,7 @@ class LoginController extends Controller
                     ]
                 ),
             ),
-            new Response(response: 401, description: "Credentials do not match"),
+            new Response(response: 402, description: "Credentials do not match"),
             new Response(response: 500, description: "Error in login"),
         ],
     )]
@@ -86,6 +86,7 @@ class LoginController extends Controller
                 $this->error('Credentials do not match', 402);
             }
 
+            session()->regenerate();
             return $this->success([
                 'user' => new UserResource(Auth::user()),
                 'token' => Auth::user()->createToken('API Token')->plainTextToken,

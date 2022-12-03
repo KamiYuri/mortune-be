@@ -17,7 +17,8 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->word(),
+            'content' => fake()->words(5, true),
         ];
     }
 }

@@ -26,4 +26,15 @@ php artisan key:generate
 ```sh
 php artisan serve
 ```
-Now server running on [http://api.mortune.test:8000](http://api.mortune.test:8000)
+Now server is running on [http://api.mortune.test:8000](http://api.mortune.test:8000)
+
+### Migrate and seed Database
+
+**- Migrate database**
+```shell
+php artisan migrate
+```
+Migrate database with seeding
+```shell
+php artisan migrate:refresh --seed
+```
