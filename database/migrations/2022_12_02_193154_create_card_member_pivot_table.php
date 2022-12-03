@@ -19,6 +19,7 @@ class CreateCardMemberPivotTable extends Migration
             $table->unsignedBigInteger('member_id')->index();
             $table->foreign('member_id')->references('member_id')->on('board_member')->onDelete('cascade');
             $table->primary(['card_id', 'member_id']);
+            $table->timestamps();
         });
     }
 

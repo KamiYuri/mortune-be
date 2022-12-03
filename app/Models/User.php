@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class User extends Model
 {
+    use HasFactory;
+
     /**
      * @var array
      */
@@ -28,9 +31,11 @@ class User extends Model
         return $this->hasMany('App\Models\Workspace', 'owner_id');
     }
 
-    public function boards(): BelongsToMany
+    /**
+     * @return BelongsToMany
+     */
+    public function members(): BelongsToMany
     {
-        return $this->belongsToMany(Board::class, "board_member", "member_id", "board_id")
-            ->withTimestamps();
+        return $this->belongsToMany(Workspace::class, 'member_workspace', 'member_id', 'workspace_id')->withTimestamps();
     }
 }

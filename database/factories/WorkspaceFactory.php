@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Workspace>
+ * @extends Factory<Workspace>
  */
 class WorkspaceFactory extends Factory
 {
@@ -14,10 +15,11 @@ class WorkspaceFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'name' => fake()->word,
+            'description' => fake()->sentence(),
         ];
     }
 }

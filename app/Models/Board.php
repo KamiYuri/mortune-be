@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Board extends Model
 {
+    use HasFactory;
+
     /**
      * @var array
      */
@@ -38,9 +41,4 @@ class Board extends Model
         return $this->hasMany('App\Models\CardList');
     }
 
-    public function members(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, "board_member", "board_id", "member_id")
-            ->withTimestamps();
-    }
 }

@@ -19,6 +19,7 @@ class CreateBoardMemberPivotTable extends Migration
             $table->unsignedBigInteger('member_id')->index();
             $table->foreign('member_id')->references('member_id')->on('member_workspace')->onDelete('cascade');
             $table->primary(['board_id', 'member_id']);
+            $table->timestamps();
         });
     }
 
