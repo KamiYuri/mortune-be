@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('workspaces', function (Blueprint $table) {
-            $table->foreign(['owner_id'], 'Workspace__Owner___fk')->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->text('role');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('workspaces', function (Blueprint $table) {
-            $table->dropForeign('Workspace__Owner___fk');
-        });
+        Schema::dropIfExists('roles');
     }
 };

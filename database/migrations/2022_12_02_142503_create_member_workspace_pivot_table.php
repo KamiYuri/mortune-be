@@ -19,6 +19,8 @@ class CreateMemberWorkspacePivotTable extends Migration
             $table->unsignedBigInteger('workspace_id')->index();
             $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
             $table->primary(['member_id', 'workspace_id']);
+            $table->unsignedBigInteger('role');
+            $table->foreign('role')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamps();
         });
     }

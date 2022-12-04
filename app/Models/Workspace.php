@@ -30,7 +30,7 @@ class Workspace extends Model
      */
     public function owner(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User', 'owner_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     /**
@@ -38,15 +38,14 @@ class Workspace extends Model
      */
     public function boards(): HasMany
     {
-        return $this->hasMany('App\Models\Board');
+        return $this->hasMany(Board::class);
     }
-
 
     /**
      * @return BelongsToMany
      */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'member_workspace', 'workspace_id', 'member_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'member_workspace', 'workspace_id', 'member_id')->withPivot('role')->withTimestamps();
     }
 }

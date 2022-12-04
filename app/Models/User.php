@@ -24,18 +24,10 @@ class User extends Model
     protected $fillable = ['username', 'password', 'email'];
 
     /**
-     * @return HasMany
-     */
-    public function workspaces(): HasMany
-    {
-        return $this->hasMany('App\Models\Workspace', 'owner_id');
-    }
-
-    /**
      * @return BelongsToMany
      */
-    public function members(): BelongsToMany
+    public function workspaces(): BelongsToMany
     {
-        return $this->belongsToMany(Workspace::class, 'member_workspace', 'member_id', 'workspace_id')->withTimestamps();
+        return $this->belongsToMany(Workspace::class, 'member_workspace', 'member_id', 'workspace_id')->withPivot('role')->withTimestamps();
     }
 }

@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            RoleSeeder::class,
             UserSeeder::class,
             WorkspaceSeeder::class,
-            BoardSeeder::class,
-            CardListSeeder::class,
-            CardSeeder::class
+            WorkspaceMemberSeeder::class,
+//            BoardSeeder::class,
+//            CardListSeeder::class,
+//            CardSeeder::class
         ]);
     }
 }

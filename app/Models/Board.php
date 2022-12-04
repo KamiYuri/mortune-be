@@ -30,7 +30,7 @@ class Board extends Model
      */
     public function workspace(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Workspace');
+        return $this->belongsTo(Workspace::class);
     }
 
     /**
@@ -38,7 +38,7 @@ class Board extends Model
      */
     public function cardLists(): HasMany
     {
-        return $this->hasMany('App\Models\CardList');
+        return $this->hasMany(CardList::class);
     }
 
 }

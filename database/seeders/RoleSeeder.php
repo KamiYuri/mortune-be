@@ -2,22 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Workspace;
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class WorkspaceSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        Workspace::factory()
-            ->count(3)
-            ->create();
+        Role::create(
+            ['role' => 'owner'],
+        );
+        Role::create(
+            ['role' => 'member'],
+        );
     }
 }

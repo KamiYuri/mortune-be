@@ -16,13 +16,11 @@ class BoardSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (range(1, 3) as $i) {
-            $workspace = Workspace::factory()->create();
+        $workspace = Workspace::first();
 
-            Board::factory()
-                ->count(fake()->numberBetween(1, 1))
-                ->for($workspace, 'workspace')
-                ->create();
-        }
+        Board::factory()
+            ->count(3)
+            ->for($workspace)
+            ->create();
     }
 }
