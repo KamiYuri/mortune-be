@@ -19,9 +19,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             WorkspaceSeeder::class,
             WorkspaceMemberSeeder::class,
-//            BoardSeeder::class,
-//            CardListSeeder::class,
-//            CardSeeder::class
+            BoardSeeder::class,
+            BoardMemberSeeder::class,
+            CardListSeeder::class,
+            CardSeeder::class,
+            CardMemberSeeder::class
         ]);
     }
 }

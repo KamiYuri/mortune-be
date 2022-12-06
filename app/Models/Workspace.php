@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property integer $owner_id
  * @property string $name
  * @property string $description
- * @property User $user
+ * @property User[] $members
  * @property Board[] $boards
  */
 class Workspace extends Model
@@ -46,6 +46,6 @@ class Workspace extends Model
      */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'member_workspace', 'workspace_id', 'member_id')->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(User::class, 'member_workspace', 'workspace_id', 'member_id')->withPivot('role')->withTimestamps()->using(WorkspaceMember::class);
     }
 }

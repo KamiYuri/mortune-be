@@ -14,10 +14,15 @@ class CardFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'list_id' => 1,
+            'archived' => false,
+            'description' => fake()->sentence(),
+            'due' => false,
+            'due_complete' => false,
+            'title' => fake()->word
         ];
     }
 }

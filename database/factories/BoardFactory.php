@@ -18,7 +18,6 @@ class BoardFactory extends Factory
     public function definition(): array
     {
         return [
-            'owner_id' => 1,
             'title' => fake()->word,
         ];
     }

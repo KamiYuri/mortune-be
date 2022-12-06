@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CardList;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,8 +13,10 @@ class CardListSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        //
+        CardList::factory()
+            ->count(4)
+            ->create();
     }
 }

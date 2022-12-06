@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class CardList extends Model
 {
+    use HasFactory;
+
     /**
      * @var array
      */
@@ -26,7 +29,7 @@ class CardList extends Model
      */
     public function board(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Board');
+        return $this->belongsTo(Board::class);
     }
 
     /**
@@ -34,6 +37,6 @@ class CardList extends Model
      */
     public function cards(): HasMany
     {
-        return $this->hasMany('App\Models\Card', 'list_id');
+        return $this->hasMany(Card::class, 'list_id');
     }
 }

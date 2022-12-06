@@ -41,4 +41,12 @@ class Board extends Model
         return $this->hasMany(CardList::class);
     }
 
+
+    /**
+     * @return BelongsToMany
+     */
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'board_member', 'board_id', 'member_id')->withPivot('role')->using(BoardMember::class);
+    }
 }

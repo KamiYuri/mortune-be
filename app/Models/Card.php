@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property integer $id
@@ -17,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Card extends Model
 {
+    use HasFactory;
+
     /**
      * @var array
      */
@@ -27,6 +32,14 @@ class Card extends Model
      */
     public function cardList(): BelongsTo
     {
-        return $this->belongsTo('App\Models\CardList', 'list_id');
+        return $this->belongsTo(CardList::class, 'list_id');
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'card_member', 'card_id', 'member_id')->withPivot('role')->using(CardMember::class);
     }
 }
