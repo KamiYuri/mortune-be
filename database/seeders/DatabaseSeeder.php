@@ -12,11 +12,18 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call([
+            RoleSeeder::class,
             UserSeeder::class,
-            TaskSeeder::class
+            WorkspaceSeeder::class,
+            WorkspaceMemberSeeder::class,
+            BoardSeeder::class,
+            BoardMemberSeeder::class,
+            CardListSeeder::class,
+            CardSeeder::class,
+            CardMemberSeeder::class
         ]);
     }
 }

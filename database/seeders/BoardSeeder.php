@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Board;
 use App\Models\Workspace;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class BoardSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +16,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()
-            ->count(10)
+        $workspace = Workspace::first();
+
+        Board::factory()
+            ->count(3)
+            ->for($workspace)
             ->create();
     }
 }

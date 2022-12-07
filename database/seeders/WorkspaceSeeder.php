@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Workspace;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class WorkspaceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +16,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()
-            ->count(10)
+        Workspace::factory()
+            ->count(3)
             ->create();
     }
 }

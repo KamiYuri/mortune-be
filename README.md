@@ -21,20 +21,24 @@ composer install
 php artisan key:generate
 ```
 
+### Migration
+1. Create database
+2. Config database in file [.env](./.env)
+3. Run migrate
+```shell
+php artisan migrate
+```
+- _**Refresh database**_
+```shell
+php artisan migrate:refresh
+```
+- _**Migrate database with seeding**_
+```shell
+php artisan migrate:refresh --seed
+```
 ### Serve app for Development
 
 ```sh
 php artisan serve
 ```
-Now server is running on [http://api.mortune.test:8000](http://api.mortune.test:8000)
-
-### Migrate and seed Database
-
-**- Migrate database**
-```shell
-php artisan migrate
-```
-Migrate database with seeding
-```shell
-php artisan migrate:refresh --seed
-```
+Now server running on [http://api.mortune.test:8000](http://api.mortune.test:8000)
