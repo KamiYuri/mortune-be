@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<User>
+ * @extends Factory<Workspace>
  */
-class UserFactory extends Factory
+class WorkspaceFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +18,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => fake()->userName,
-            'password' => bcrypt('password'),
-            'email' => fake()->unique()->safeEmail,
+            'name' => fake()->word,
+            'description' => fake()->sentence(),
         ];
     }
 }
