@@ -30,3 +30,5 @@ Route::middleware('auth:sanctum')->group(function () {
 //        'data' => 'test'
 //    ]);
 //});
+
+Route::view('/', 'info');
