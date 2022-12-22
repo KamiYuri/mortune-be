@@ -81,7 +81,7 @@
                             }
                         }
                     },
-                    "401": {
+                    "402": {
                         "description": "Credentials do not match"
                     },
                     "500": {
