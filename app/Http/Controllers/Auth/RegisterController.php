@@ -60,10 +60,10 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
-            return response()->json([
+            return $this->success([
                 'user' => new UserResource($user),
                 'token' => $user->createToken('API Token')->plainTextToken,
-            ]);
+            ], 'Register successfully.');
         }catch (Exception) {
             return $this->error('Error in register', 500);
         }

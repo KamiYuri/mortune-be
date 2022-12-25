@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Traits\HttpResponses;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
+use Request;
 
 class LogoutController extends Controller
 {
@@ -16,7 +18,7 @@ class LogoutController extends Controller
         path: '/logout',
         operationId: "logout", summary: "Logout a user", tags: ["Authenticate"],
         responses: [
-            new OA\Response(response: 200, description: "Logout a user"),
+            new OA\Response(response: 200, description: "Logout successfully."),
             new OA\Response(response: 500, description: "Error in logout"),
         ]
     )]
@@ -27,10 +29,11 @@ class LogoutController extends Controller
      */
     public function logout() {
         try {
-            Auth::user()->currentAccessToken()->delete();
-            return $this->success();
-        } catch (\Exception $error) {
-            return $this->error("Error in logout", 500);
+            Auth::user()->tokens()->delete();
+
+            return $this->success(null, "Logout successfully.");
+        } catch (Exception $error) {
+            return $this->error("Error in logout ".$error, 500);
         }
     }
 }

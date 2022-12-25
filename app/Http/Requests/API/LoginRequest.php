@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests\API;
 
-use App\Http\Helpers\Helper;
+use App\Traits\HttpResponses;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
 {
+    use HttpResponses;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -37,6 +39,6 @@ class LoginRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        Helper::sendError('Validation error', $validator->errors());
+        $this->error('Validation error: '.$validator->errors(), 500);
     }
 }
