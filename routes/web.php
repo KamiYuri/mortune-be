@@ -31,4 +31,4 @@ Route::middleware('auth:sanctum')->group(function () {
 //    ]);
 //});
 
-Route::view('/', 'info');
+Route::view('/', 'welcome');
