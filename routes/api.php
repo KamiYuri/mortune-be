@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('/task', TaskController::class)->only('index');
 });
+
+Route::apiResource('user', UserController::class)->except(['create', 'update']);
