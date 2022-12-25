@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +11,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return ("Hello bro!");
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Route;
+
+Route::post('login', [LoginController::class, 'login'])->name('login');
+Route::post('register', [RegisterController::class, 'register']);
+
+// Protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [LogoutController::class, 'logout']);
 });
+
+
+//Route::post('test', function () {
+//    return response()->json([
+//        'data' => 'test'
+//    ]);
+//});
+
+Route::view('/', 'welcome');

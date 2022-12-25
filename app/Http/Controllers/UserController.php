@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use App\Traits\HttpResponses;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    use HttpResponses, Authenticatable;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -40,12 +48,17 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
+        try {
+            $user = new UserResource(User::findOrFail($id));
+            return $this->success($user->resolve());
+        } catch (ModelNotFoundException $exception) {
+            return $this->error('No results for user with id '.$id, '404');
+        }
     }
 
     /**

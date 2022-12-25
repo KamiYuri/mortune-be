@@ -17,6 +17,8 @@ services:
       context: ./docker/workspace
     expose:
       - 9003
+    ports:
+      - 5000-5010:8000-8010
     depends_on:
       - mysql
     volumes:
