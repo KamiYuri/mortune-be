@@ -26,15 +26,17 @@ Route::apiResource('user', UserController::class)->except(['create', 'update']);
 
 
 //Api workspace
-Route::prefix('workspace')->group(function () {
+Route::apiResource('workspace', WorkspaceController::class)->except(['create', 'update']);
+Route::post('/workspace/{id}', [WorkspaceController::class, 'update']);
+// Route::prefix('workspace')->group(function () {
 
-    Route::get('/index', [WorkspaceController::class, 'index']);
+//     Route::get('/index', [WorkspaceController::class, 'index']);
 
-    Route::post('/showbyid', [WorkspaceController::class, 'show']);
+//     Route::post('/showbyid', [WorkspaceController::class, 'show']);
 
-    Route::post('/add', [WorkspaceController::class, 'store']);
+//     Route::post('/add', [WorkspaceController::class, 'store']);
 
-    Route::post('/remove', [WorkspaceController::class, 'destroy']);
+//     Route::post('/remove', [WorkspaceController::class, 'destroy']);
 
-    Route::post('/update', [WorkspaceController::class, 'update']);
-});
+//     Route::post('/update', [WorkspaceController::class, 'update']);
+// });
