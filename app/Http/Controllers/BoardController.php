@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+use App\Http\Controllers\Controller;
+use App\Models\Board;
+use Exception;
 
 class BoardController extends Controller
 {
@@ -13,7 +18,24 @@ class BoardController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $data = DB::table("boards")->get();
+
+            return response()->json(
+                [
+                    'code' => '200',
+                    'message' => 'Get data board succesfully!!',
+                    'data' => $data
+                ]
+            );
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to get data board!!!'
+                ]
+            );
+        }
     }
 
     /**
@@ -21,9 +43,31 @@ class BoardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        try {
+            $tmpBoard = new Board();
+            $tmpBoard->title = ($request->title != null ? $request->title : "New title");
+            $tmpBoard->workspace_id = $request->workspace_id;
+            $tmpBoard->closed = ($request->closed != null ? $request->closed : 1);
+
+            $tmpBoard->save();
+
+            return response()->json(
+                [
+                    'code' => '200',
+                    'message' => 'Create board succesfully!!',
+                    'data' => $tmpBoard
+                ]
+            );
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to create board!!!'
+                ]
+            );
+        }
     }
 
     /**
@@ -45,7 +89,27 @@ class BoardController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $board = DB::table('boards')->where('id', $id)->first();
+        } catch (Exception $err) {
+            return response()->json([
+                'code' => '500',
+                'message' => 'Failed to found board!!!'
+            ]);
+        }
+
+        if ($board != null) {
+            return response()->json([
+                'code' => '200',
+                'message' => 'Found board succesfully!!',
+                'data' => $board
+            ]);
+        } else {
+            return response()->json([
+                'code' => '404',
+                'message' => 'Not found board!!!'
+            ]);
+        }
     }
 
     /**
@@ -68,7 +132,44 @@ class BoardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $board = DB::table('boards')->where('id', $id)->first();
+
+            if ($board == null) {
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found board!!!'
+                ]);
+            } else {
+                $tmpBoard = new Board();
+                $tmpBoard->title = ($request->title != null ? $request->title : $board->title);
+                $tmpBoard->workspace_id = ($request->workspace_id != null ? $request->workspace_id : $board->workspace_id);
+                $tmpBoard->closed = ($request->closed != null ? $request->closed : $board->closed);
+
+                Board::where('id', $id)->update(
+                    [
+                        'title' => $tmpBoard->title,
+                        'workspace_id' => $tmpBoard->workspace_id,
+                        'closed' => $tmpBoard->closed
+                    ]
+                );
+                $board = DB::table('boards')->where('id', $id)->first();
+                return response()->json(
+                    [
+                        'code' => '200',
+                        'message' => 'Update board succesfully!!',
+                        'data' => $board
+                    ]
+                );
+            }
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to update board!!!'
+                ]
+            );
+        }
     }
 
     /**
@@ -79,6 +180,32 @@ class BoardController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $board = DB::table('boards')->where('id', $id)->first();
+
+            if ($board == null) {
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found board!!!'
+                ]);
+            } else {
+                
+                Board::where('id', $id)->delete();
+
+                return response()->json(
+                    [
+                        'code' => '200',
+                        'message' => 'Delete board succesfully!!'
+                    ]
+                );
+            }
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to delete board!!!'
+                ]
+            );
+        }
     }
 }

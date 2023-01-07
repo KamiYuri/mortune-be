@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BoardController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::apiResource('user', UserController::class)->except(['create', 'update']);
+
+//Board API
+Route::get('board', [BoardController::class, 'index']);
+Route::post('board', [BoardController::class, 'create']);
+Route::get('board/{id}', [BoardController::class, 'show']);
+Route::put('board/{id}', [BoardController::class, 'update']);
+Route::delete('board/{id}', [BoardController::class, 'destroy']);
