@@ -151,6 +151,7 @@
                 }
             }
         },
+        //Board begin
         "/board": {
             "get": {
                 "tags": [
@@ -171,7 +172,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Get data board succesfully",
+                        "description": "Get data board succesfully!!",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -200,12 +201,106 @@
                                             }
                                         }
                                     }
+                                },
+                                "example": {
+                                    "workspace": {
+                                        "id": 1,
+                                        "title": "iure",
+                                        "workspace_id": 1,
+                                        "closed": 0,
+                                        "updated_at": "2023-01-08 01:04:24",
+                                        "created_at": "2023-01-08 01:04:24"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get data board!!!"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Create a new board",
+                "description": "Store a new created resource in storagex`",
+                "operationId": "",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "workspace_id": {
+                                        "type": "integer"
+                                    },
+                                    "closed": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "example": {
+                                    "title": "iure",
+                                    "workspace_id": 1,
+                                    "closed": 0
                                 }
                             }
                         }
                     }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Create board succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "id": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "title": "New title",
+                                        "workspace_id": "1",
+                                        "closed": 1,
+                                        "updated_at": "2023-01-08T11:13:28.000000Z",
+                                        "created_at": "2023-01-08T11:13:28.000000Z",
+                                        "id": 9
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create board!!!"
+                    }
                 }
             }
         }
+        //Board end
     }
 }
