@@ -150,6 +150,62 @@
                     }
                 }
             }
+        },
+        "/board": {
+            "get": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get data board",
+                "description": "Display list of joined user boards",
+                "operationId": "board",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {},
+                                "example": []
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get data board succesfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
