@@ -26,8 +26,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('user', UserController::class)->except(['create', 'update']);
 
 //Board API
-Route::get('board', [BoardController::class, 'index']);
-Route::post('board', [BoardController::class, 'create']);
-Route::get('board/{id}', [BoardController::class, 'show']);
-Route::put('board/{id}', [BoardController::class, 'update']);
-Route::delete('board/{id}', [BoardController::class, 'destroy']);
+Route::apiResource('board', BoardController::class)->except(['store', 'edit']);
+// Route::get('board', [BoardController::class, 'index']);
+// Route::post('board', [BoardController::class, 'create']);
+// Route::get('board/{id}', [BoardController::class, 'show']);
+// Route::put('board/{id}', [BoardController::class, 'update']);
+// Route::delete('board/{id}', [BoardController::class, 'destroy']);
