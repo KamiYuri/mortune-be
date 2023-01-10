@@ -20,6 +20,6 @@ use Illuminate\Support\Facades\Route;
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/task', TaskController::class)->only('index');
-});
 
-Route::apiResource('user', UserController::class)->except(['create', 'update']);
+    Route::post('user/authenticated', [UserController::class, "getAuthUser"]);
+});

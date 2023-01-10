@@ -94,4 +94,10 @@ class UserController extends Controller
     {
         //
     }
+
+    public function getAuthUser(Request $request) {
+        $user = $request->user();
+
+        return $user ? $this->success(new UserResource($user)) : $this->error("Failed", 500);
+    }
 }

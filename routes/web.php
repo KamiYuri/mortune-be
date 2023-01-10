@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'info');
 
 Route::post('login', [LoginController::class, 'login'])->name('login');
-Route::post('register', [RegisterController::class, 'register']);
+Route::post('register', [RegisterController::class, 'register'])->name('register');
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
