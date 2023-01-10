@@ -14,6 +14,7 @@ use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Get;
 use OpenApi\Attributes\Post;
 use OpenApi\Attributes\Put;
+use OpenApi\Attributes\Delete;
 use OpenApi\Attributes\Property;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Response;

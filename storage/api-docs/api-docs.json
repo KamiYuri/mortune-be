@@ -472,6 +472,56 @@
                         "description": "Failed to update board!!!"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Delete data a board by ID",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "board_delete_by_ID",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Found board succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "board": {
+                                            "properties": {},
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": []
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to delete board!!!"
+                    }
+                }
             }
         }
     }
