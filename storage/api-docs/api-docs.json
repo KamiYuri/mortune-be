@@ -366,7 +366,7 @@
             }
         },
         "/workspace{id}": {
-            "post": {
+            "put": {
                 "tags": [
                     "Workspace"
                 ],

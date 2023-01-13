@@ -218,7 +218,7 @@ class WorkspaceController extends Controller
         //
     }
 
-    #[OA\Post(
+    #[OA\Put(
         path: "/workspace{id}", operationId: "workspaceUpdate", summary: "Update workspace",
         requestBody: new RequestBody
         (
@@ -348,6 +348,67 @@ class WorkspaceController extends Controller
         $deleted = DB::table('workspaces')->where('id', '=', $id)->delete();
         //gui ve dl sau khi them
         $data = DB::table("workspaces")->get();
+        return response()->json($data);
+    }
+
+    //get list user by workspace id
+    #[OA\Get(
+        path: "/workspace/user{id}", operationId: "getListUserByIdWs", summary: "Get data user by id",
+        requestBody: new RequestBody
+        (
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id", type: "int")
+                        ],
+                        example: ["id"=>1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Workspace"],
+        responses: [
+            new Response(response: 200, description: "Get list user by id successfully", content: new JsonContent
+                (
+                    properties:
+                    [
+                        new Property(property: "workspace", properties: [
+                            new Property(property: "id", type: "int"),
+                            new Property(property: "role", type: "int"),
+                            new Property(property: "name", type: "string"),
+                            new Property(property: "updated_at", type: "string"),
+                            new Property(property: "created_at", type: "string"),
+                        ], type: "object")
+                    ],
+                    example:
+                    [
+                        "workspace" => [
+                            "id" => 1,
+                            "role" => 1,
+                            "name" => "hjhjshjdyuy uysuyu uyu",
+                            "updated_at" => "2022-11-09T17:55:48.000000Z",
+                            "created_at" => "2022-11-09T17:55:48.000000Z"]
+                    ]
+                ),
+            ),
+            new Response(response: 500, description: "Error in get user by id ws"),
+        ],
+    )]
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getListUserByIdWs($id)
+    {
+        
+        //$data = DB::table('workspaces')->find($id);
+        $data = DB::table('users')->join('member_workspace', 'users.id', '=', 'member_workspace.member_id')
+        ->where('member_workspace.workspace_id', '=', $id)
+        ->select('users.id', 'member_workspace.role', 'users.username', 'users.updated_at', 'users.created_at')->get();
         return response()->json($data);
     }
 }

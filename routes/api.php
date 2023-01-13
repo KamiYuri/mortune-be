@@ -26,8 +26,9 @@ Route::apiResource('user', UserController::class)->except(['create', 'update']);
 
 
 //Api workspace
-Route::apiResource('workspace', WorkspaceController::class)->except(['create', 'update']);
-Route::post('/workspace/{id}', [WorkspaceController::class, 'update']);
+Route::apiResource('workspace', WorkspaceController::class)->except(['create', 'edit']);
+Route::get('workspace/user/{id}', [WorkspaceController::class, 'getListUserByIdWs']);
+//Route::post('/workspace/{id}', [WorkspaceController::class, 'update']);
 // Route::prefix('workspace')->group(function () {
 
 //     Route::get('/index', [WorkspaceController::class, 'index']);
