@@ -53,7 +53,7 @@ ADD configs/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 ADD configs/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
 
 # Clean up
-RUN apt-get remove -y git && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /var/www/html
 

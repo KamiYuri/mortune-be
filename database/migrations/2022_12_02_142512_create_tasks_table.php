@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('owner_id');
+            $table->foreign(['owner_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('NO ACTION');
             $table->string('name');
             $table->string('content');
             $table->timestamps();
