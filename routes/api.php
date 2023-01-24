@@ -27,8 +27,8 @@ Route::apiResource('user', UserController::class)->except(['create', 'update']);
 
 //Board API
 Route::apiResource('board', BoardController::class)->except(['store', 'edit']);
-// Route::get('board', [BoardController::class, 'index']);
-// Route::post('board', [BoardController::class, 'create']);
+Route::post('board/boards_of_user/{id_member}', [BoardController::class, 'boards_in_workspace_of_user']);
+Route::post('board/boards_in_workspace_of_user', [BoardController::class, 'boards_in_workspace_of_user']);
 // Route::get('board/{id}', [BoardController::class, 'show']);
 // Route::put('board/{id}', [BoardController::class, 'update']);
 // Route::delete('board/{id}', [BoardController::class, 'destroy']);
