@@ -40,8 +40,8 @@ services:
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
       - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
-      - ${BACKEND_PATH}:/var/www/back-end
       - ${FRONTEND_PATH}:/var/www/front-end
+      - ${BACKEND_PATH}:/var/www/back-end
 
   phpmyadmin:
     image: phpmyadmin:latest
