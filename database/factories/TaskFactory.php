@@ -14,10 +14,11 @@ class TaskFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => fake()->word(),
+            'owner_id' => 1,
             'content' => fake()->words(5, true),
         ];
     }

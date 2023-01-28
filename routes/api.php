@@ -19,7 +19,11 @@ use App\Http\Controllers\WorkspaceController;
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('/task', TaskController::class)->only('index');
+    Route::resource('/task', TaskController::class);
+
+    Route::post('user/authenticated', [UserController::class, "getAuthUser"]);
+
+    Route::resource('/user', UserController::class);
 });
 
 Route::apiResource('user', UserController::class)->except(['create', 'update']);

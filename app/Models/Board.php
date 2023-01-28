@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property integer $workspace_id
  * @property string $title
  * @property boolean $closed
- * @property Workspace $workspace
+ * @property Workspace $laravel-app
  * @property CardList[] $cardLists
  */
 class Board extends Model

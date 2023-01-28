@@ -42,3 +42,14 @@ php artisan migrate:refresh --seed
 php artisan serve
 ```
 Now server running on [http://api.mortune.test:8000](http://api.mortune.test:8000)
+
+### Realtime Broadcast
+```sh
+php artisan serve
+php artisan queue:work
+laravel-echo-server start
+yarn dev
+
+Class Event implements ShouldBroadcast
+<script src="http://localhost:6001/socket.io/socket.io.js"></script>
+```

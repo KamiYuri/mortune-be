@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helpers\Helper;
 use App\Http\Requests\API\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Traits\HttpResponses;
-use Auth;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Post;
 use OpenApi\Attributes\Property;
@@ -83,16 +82,17 @@ class LoginController extends Controller
             $credentials = request(['email', 'password']);
 
             if (!Auth::attempt($credentials)) {
-                $this->error('Credentials do not match', 402);
+                return $this->error('Credentials do not match', 402);
             }
 
-            session()->regenerate();
+            $token = Auth::user()->createToken('API_Token')->plainTextToken;
+
             return $this->success([
                 'user' => new UserResource(Auth::user()),
-                'token' => Auth::user()->createToken('API Token')->plainTextToken,
-            ]);
+                'token' => $token,
+            ], 'Login successfully.');
         } catch (Exception $error) {
-            return $this->error('Error in login', 500);
+            return $this->error('Error in login '.$error, 500);
         }
     }
 }

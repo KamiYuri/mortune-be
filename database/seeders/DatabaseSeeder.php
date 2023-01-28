@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             BoardMemberSeeder::class,
             CardListSeeder::class,
             CardSeeder::class,
-            CardMemberSeeder::class
+            CardMemberSeeder::class,
+            TaskSeeder::class
         ]);
     }
 }

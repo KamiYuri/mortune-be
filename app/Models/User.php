@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property integer $id
@@ -14,9 +15,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $email
  * @property Workspace[] $workspaces
  */
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
     /**
      * @var array
@@ -46,5 +47,10 @@ class User extends Model
     public function cards(): BelongsToMany
     {
         return $this->belongsToMany(Card::class, 'card_member', 'member_id', 'card_id')->withPivot('role')->using(CardMember::class);
+    }
+
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class, 'owner_id', 'id');
     }
 }
