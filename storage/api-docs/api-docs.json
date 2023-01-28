@@ -523,6 +523,160 @@
                     }
                 }
             }
+        },
+        "/board/boards_of_user/{id_member}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get all board of user",
+                "operationId": "boards_of_user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_member": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_member": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get cards in board of user succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "board_id": {
+                                                    "type": "integer"
+                                                },
+                                                "member_id": {
+                                                    "type": "integer"
+                                                },
+                                                "role": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": [
+                                    {
+                                        "board_id": 1,
+                                        "member_id": 1,
+                                        "role": 1,
+                                        "created_at": "2023-01-08 01:04:25",
+                                        "updated_at": "2023-01-08 01:04:25"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found user!!!"
+                    },
+                    "500": {
+                        "description": "Failed to delete board!!!"
+                    }
+                }
+            }
+        },
+        "/board/boards_of_user?id_user={id_user}&id_workspace={id_workspace}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get all board in workspace of user",
+                "operationId": "boards_in_workspace_of_user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_user": {
+                                        "type": "integer"
+                                    },
+                                    "id_workspace": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_user": 1,
+                                    "id_workspace": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get cards in board of user succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "board_id": {
+                                                    "type": "integer"
+                                                },
+                                                "member_id": {
+                                                    "type": "integer"
+                                                },
+                                                "role": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": [
+                                    {
+                                        "board_id": 1,
+                                        "member_id": 1,
+                                        "role": 1,
+                                        "created_at": "2023-01-08 01:04:25",
+                                        "updated_at": "2023-01-08 01:04:25"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found user!!!"
+                    },
+                    "500": {
+                        "description": "Failed to delete board!!!"
+                    }
+                }
+            }
         }
     }
 }

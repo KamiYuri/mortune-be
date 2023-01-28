@@ -483,7 +483,7 @@ class BoardController extends Controller
                 )
             ]
         ),
-        tags: ["Board_func"],
+        tags: ["Board"],
         responses: [
             new Response(
                 response: 200,
@@ -562,7 +562,7 @@ class BoardController extends Controller
                 )
             ]
         ),
-        tags: ["Board_func"],
+        tags: ["Board"],
         responses: [
             new Response(
                 response: 200,
