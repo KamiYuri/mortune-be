@@ -11,7 +11,7 @@ trait HttpResponses
         return response()->json([
             'status' => 'OK',
             'message' => $message,
-            'data' => $data,
+            'payload' => $data,
         ], $code);
     }
 

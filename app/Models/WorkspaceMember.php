@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property BoardMember[] $boardMembers
  * @property User $user
  * @property Role $role
- * @property Workspace $workspace
+ * @property Workspace $laravel-app
  */
 class WorkspaceMember extends Pivot
 {
