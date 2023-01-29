@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CardListController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -24,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('user/authenticated', [UserController::class, "getAuthUser"]);
 
     Route::resource('/user', UserController::class);
+    Route::post('/cardlist/board', [CardListController::class, "getByBoard"]);
 });
 
 Route::resource('/task', TaskController::class);

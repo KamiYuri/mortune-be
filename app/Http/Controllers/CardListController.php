@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Board;
+use App\Models\CardList;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
 class CardListController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      *
@@ -80,5 +85,14 @@ class CardListController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getByBoard(Request $request) {
+        $board_id = $request["board_id"];
+
+        $board = Board::find($board_id);
+        $card_lists = $board->cardLists;
+
+        return $this->success($card_lists);
     }
 }
