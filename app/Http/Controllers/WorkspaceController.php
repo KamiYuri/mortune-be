@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Workspace;
@@ -18,6 +19,8 @@ use OpenApi\Attributes as OA;
 
 class WorkspaceController extends Controller
 {
+    use HttpResponses;
+
     #[OA\Get(
         path: "/workspace", operationId: "workspace", summary: "Get data workspace",
         requestBody: new RequestBody
@@ -27,7 +30,7 @@ class WorkspaceController extends Controller
                     mediaType: "application/json",
                     schema: new Schema(
                         properties: [
-                            
+
                         ],
                         example: []
                     ),
@@ -66,13 +69,16 @@ class WorkspaceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        $data = DB::table("workspaces")->get();
-        
-        return response()->json($data);
+        try {
+            $workspace = Workspace::all();
+            return $this->success($workspace);
+        } catch (\Exception $error) {
+            return $this->error($error, 404);
+        }
     }
 
     /**
@@ -202,7 +208,7 @@ class WorkspaceController extends Controller
      */
     public function show($id)
     {
-        
+
         $data = DB::table('workspaces')->find($id);
         return response()->json($data);
     }
@@ -235,7 +241,7 @@ class WorkspaceController extends Controller
                             "id" => 1,
                             "name" => "abc",
                             "description" => "hjhjshjdyuy uysuyu uyu"
-                            
+
                         ]
                     ),
                 )
@@ -282,7 +288,7 @@ class WorkspaceController extends Controller
         $description = $req->description;
         $created_at = now();
         $updated_at = now();
-        
+
         DB::table('workspaces')
             ->where('id', $id)
             ->update(['name' => $name, 'description'=> $description, 'created_at'=> $created_at, 'updated_at'=> $updated_at]);
@@ -344,7 +350,7 @@ class WorkspaceController extends Controller
      */
     public function destroy(int $id)
     {
-        
+
         $deleted = DB::table('workspaces')->where('id', '=', $id)->delete();
         //gui ve dl sau khi them
         $data = DB::table("workspaces")->get();
@@ -404,7 +410,7 @@ class WorkspaceController extends Controller
      */
     public function getListUserByIdWs($id)
     {
-        
+
         //$data = DB::table('workspaces')->find($id);
         $data = DB::table('users')->join('member_workspace', 'users.id', '=', 'member_workspace.member_id')
         ->where('member_workspace.workspace_id', '=', $id)
