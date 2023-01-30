@@ -123,7 +123,35 @@ class CardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $card = Card::where('id', $id)->first();
+            if(is_null($card)){
+                return $this->error('Not found result for card!', 401);
+            }else{
+                $description = $request->description;
+                $due = $request->due;
+                $due_complete = $request->due_complete;
+                $title = $request->title;
+
+                if(!is_null($title)){
+                    $card->update(['title' => $title]);
+                }
+                if(!is_null($description)){
+                    $card->update(['description' => $description]);
+                }
+                if(!is_null($due)){
+                    $card->update(['due' => $due]);
+                }
+                if(!is_null($due_complete)){
+                    $card->update(['due_complete' => $due_complete]);
+                }
+
+                return $this->success($card, 'Updating card successfully!');
+                
+            }
+        }catch(Exception $error){
+            return $this->error("Error when updating card!", 500);
+        }
     }
 
     /**
