@@ -259,7 +259,7 @@ class BoardController extends Controller
     public function show($id)
     {
         try {
-            $board = DB::table('boards')->where('id', $id)->first();
+            $data = DB::table('boards')->where('id', $id)->first();
         } catch (Exception $err) {
             return response()->json([
                 'code' => '500',
@@ -267,11 +267,11 @@ class BoardController extends Controller
             ]);
         }
 
-        if ($board != null) {
+        if ($data != null) {
             return response()->json([
                 'code' => '200',
                 'message' => 'Found board succesfully!!',
-                'data' => $board
+                'data' => $data
             ]);
         } else {
             return response()->json([
@@ -382,12 +382,12 @@ class BoardController extends Controller
                         'closed' => $tmpBoard->closed
                     ]
                 );
-                $board = DB::table('boards')->where('id', $id)->first();
+                $data = DB::table('boards')->where('id', $id)->first();
                 return response()->json(
                     [
                         'code' => '200',
                         'message' => 'Update board succesfully!!',
-                        'data' => $board
+                        'data' => $data
                     ]
                 );
             }
@@ -534,7 +534,7 @@ class BoardController extends Controller
                     'message' => 'Not found user!!!'
                 ]);
             } else {
-                $boards  = DB::table('board_member')
+                $data  = DB::table('board_member')
                     ->select('board_id', 'role')
                     ->where('member_id', $id_user)
                     ->get();
@@ -543,7 +543,7 @@ class BoardController extends Controller
                     [
                         'code' => '200',
                         'message' => 'Get cards in board of user succesfully',
-                        'data' => $boards
+                        'data' => $data
                     ]
                 );
             }
@@ -622,7 +622,7 @@ class BoardController extends Controller
                     'message' => 'Not found user!!!'
                 ]);
             } else {
-                $boards  = DB::table('board_member')
+                $data  = DB::table('board_member')
                     ->select('board_id',  'workspace_id', 'title' ,'role' ,'closed')
                     ->where('member_id', $id_user)
                     ->join('boards', 'boards.id', '=', 'board_member.board_id')
@@ -632,7 +632,7 @@ class BoardController extends Controller
                     [
                         'code' => '200',
                         'message' => 'Get cards in board of user succesfully',
-                        'data' => $boards
+                        'data' => $data
                     ]
                 );
             }
@@ -727,7 +727,7 @@ class BoardController extends Controller
             } else {
 
 
-                $boards  = DB::table('board_member')
+                $data  = DB::table('board_member')
                     ->select('board_id', 'title' ,'role' ,'closed')
                     ->where('member_id', $id_user)
                     ->join('boards', 'boards.id', '=', 'board_member.board_id')
@@ -738,7 +738,7 @@ class BoardController extends Controller
                     [
                         'code' => '200',
                         'message' => 'Get cards in board of user succesfully',
-                        'data' => $boards
+                        'data' => $data
                     ]
                 );
             }
