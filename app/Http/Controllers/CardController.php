@@ -162,6 +162,16 @@ class CardController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $card = Card::where('id', $id)->first();
+            if(is_null($card)){
+                return $this->error('Not found result for card!', 401);
+            }else{
+                $card->delete();
+                return $this->success(null, 'Delete card successfully!');
+            } 
+        }catch(Exception $error){
+            return $this->error('Error when deleting card!', 500);
+        }
     }
 }
