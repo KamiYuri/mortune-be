@@ -80,7 +80,6 @@ class CardListController extends Controller
 
     public function index()
     {
-        $board_id = $request->board_id;
         return $this->success(CardList::all(), 'OK');
     }
 
@@ -152,16 +151,16 @@ class CardListController extends Controller
             }
             
             $card_list = CardList::where('board_id', $request->board_id)->where('title', $request->title)->first();
+            if(!is_null($card_list)){
+                return $this->error('Title already exists!', 401);
+            }
 
             $newCardList = new CardList;
             $newCardList->title = $request->title;
             $newCardList->board_id = $request->board_id;
             $newCardList->archived = $request->archived;
             
-
-
             $newCardList->save();
-
 
             return response()->json(['code' => '200', 
                 'message' => 'Create card list successfully!']);
@@ -194,6 +193,52 @@ class CardListController extends Controller
         //
     }
 
+    #[OA\Put(
+        path: "/card_list/{id}", operationId: "cardListUpdate", summary: "Update card list",
+        requestBody: new RequestBody
+        (
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id", type: "int"),
+                            new Property(property: "title", type: "string")
+                        ],
+                        example: [
+                            "id" => 1,
+                            "title" => "sone title"     
+                        ]
+                    ),
+                )
+            ]
+        ),
+        tags: ["CardList"],
+        responses: [
+            new Response(response: 200, description: "Update card list successfully", content: new JsonContent
+                (
+                    properties:
+                    [
+                        new Property(property: "card_list", properties: [
+                            new Property(property: "id", type: "int"),
+                            new Property(property: "title", type: "string"),
+                        ], type: "object")
+                    ],
+                    example:
+                    [
+                        "card list" => [
+                            "id" => 1,
+                            "title" => "abc"
+                        ]
+                    ]
+        
+                ),
+            ),
+            new Response(response: 500, description: "Error in update workspace"),
+        ],
+    )]
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -203,7 +248,18 @@ class CardListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $title = $request->title;
+        if(is_null($title)){
+            return $this->error('Missing fields!');
+        }
+        try{
+            CardList::where('id', $id)->update(['title' => $title]);
+            return response()->json(['code' => '200',
+            'message' => 'Update card list successfully!']);
+        }catch(Exception $error){
+            return $this->error("Error when updating!", 500);
+        }
+
     }
 
     /**
@@ -212,8 +268,50 @@ class CardListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    #[OA\Delete(
+        path: "/card_list/{id}", operationId: "cardListDelete", summary: "Delete a card list",
+        requestBody: new RequestBody
+        (
+            content: [
+            ]
+        ),
+        tags: ["CardList"],
+        responses: [
+            new Response(response: 200, description: "Add data card list successfully", content: new JsonContent
+                (
+                    properties:
+                    [
+                        new Property(property: "response", properties: [
+                            new Property(property: "code", type: "int"),
+                            new Property(property: "message", type: "string"),
+                        ], type: "object")
+                    ],
+                    example:
+                    [
+                        "response" => [
+                            "code" => 200,
+                            "message" => "Delete card list successfully!"]
+                    ]
+                ),
+            ),
+            new Response(response: 500, description: "Error in add workspace"),
+        ],
+    )]
+
     public function destroy($id)
     {
-        //
+        try{
+            try{
+                $cardList = DB::table('card_lists')->where('id', $id)->first();
+            }catch(Exception $err){
+                return $this->err("Card list with id ", $id, " doesn't exist!");
+            }
+            $cardList = CardList::where('id', $id)->delete();
+            return response()->json(['code' => '200', 
+                'message' => 'Delete card list successfully!']);
+        } catch(Exception $error){
+            return $this->error('Error when deleting card list!', 500);
+        }
     }
 }
