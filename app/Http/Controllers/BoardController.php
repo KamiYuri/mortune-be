@@ -559,6 +559,50 @@ class BoardController extends Controller
 
     // end boards_of_user
 
+    // get membership of board 
+
+    public function get_membership_of_board ($id_board)
+    {
+        try {
+            if (!is_numeric($id_board)) {
+                return response()->json([
+                    'code' => '400',
+                    'message' => 'Parameter type is invalid!!!'
+                ]);
+            }
+
+            if (DB::table('boards')->where('id', $id_board)->first()==null) {
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found board!!!'
+                ]);
+            } else {
+                $data  = DB::table('board_member')
+                    ->select('member_id', 'role')
+                    ->where('board_id', $id_board)
+                    ->get();
+
+                return response()->json(
+                    [
+                        'code' => '200',
+                        'message' => 'Get membership of board succesfully',
+                        'data' => $data
+                    ]
+                );
+            }
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to get membership of board!!!'
+                ]
+            );
+        }
+    }
+
+    // end get membership of board 
+    
+
     // boards_with_workspace_of_user
 
     public function boards_with_workspace_of_user($id_user)

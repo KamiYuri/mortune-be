@@ -30,5 +30,6 @@ Route::apiResource('board', BoardController::class)->except(['store', 'edit']);
 Route::post('board/boards_of_user/{id_user}', [BoardController::class, 'boards_of_user']);
 Route::post('board/boards_with_workspace_of_user/{id_user}', [BoardController::class, 'boards_with_workspace_of_user']);
 Route::post('board/boards_in_workspace_of_user/{id_user}/{id_workspace}', [BoardController::class, 'boards_in_workspace_of_user']);
+Route::post('board/get_membership_of_board/{id_board}', [BoardController::class, 'get_membership_of_board']);
 
 Route::resource('/task', TaskController::class);
