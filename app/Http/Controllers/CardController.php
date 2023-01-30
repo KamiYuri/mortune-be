@@ -76,7 +76,7 @@ class CardController extends Controller
 
             $newCard->save();
 
-            return $this->success($newCard, 'OK');
+            return $this->success($newCard, 'Create new card successfully!');
         }catch(Exception $error){
             return $this->error("Error when create new card!", 500);
         }
@@ -91,7 +91,16 @@ class CardController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $card = Card::where('id', $id)->first();
+            if(is_null($card)){
+                return $this->error('Not found result for card!', 401);
+            }else{
+                return $this->success($card, 'Found result for card!');
+            }
+        }catch(Exception $error){
+            return $this->error("Error when display card!", 500);
+        }
     }
 
     /**
@@ -102,7 +111,7 @@ class CardController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
