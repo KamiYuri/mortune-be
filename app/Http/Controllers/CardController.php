@@ -3,9 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Helpers\Helper;
+
+use Illuminate\Support\Facades\DB;
+use App\Models\CardList;
+use App\Models\Card;
+
+use Exception;
+use Illuminate\Http\JsonResponse;
+use OpenApi\Attributes\MediaType;
+use OpenApi\Attributes\Post;
+use OpenApi\Attributes\Property;
+use OpenApi\Attributes\RequestBody;
+use OpenApi\Attributes\Response;
+use OpenApi\Attributes\Schema;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes as OA;
+use App\Traits\HttpResponses;
 
 class CardController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +31,7 @@ class CardController extends Controller
      */
     public function index()
     {
-        //
+        return $this->success(Card::all(), 'OK');
     }
 
     /**
@@ -34,7 +52,35 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(is_null($request->list_id) || is_null($request->title) || is_null($request->due) ||
+        is_null($request->due_complete) || is_null($request->description)){
+            return $this->error('Missing fields', 401);
+        }
+
+        $cardList = CardList::where('id', $request->list_id)->first();
+        if(is_null($cardList)){
+            return $this->error('List ID not exists!', 402);
+        }
+        $card = Card::where('title', $request->title)->first();
+        if(!is_null($card)){
+            return $this->error('Title already exists!', 403);
+        }
+        try{
+            $newCard = new Card;
+            $newCard->list_id = $request->list_id;
+            $newCard->archived = $request->archived;
+            $newCard->description = $request->description;
+            $newCard->due = $request->due;
+            $newCard->due_complete = $request->due_complete;
+            $newCard->title = $request->title;
+
+            $newCard->save();
+
+            return $this->success($newCard, 'OK');
+        }catch(Exception $error){
+            return $this->error("Error when create new card!", 500);
+        }
+
     }
 
     /**
