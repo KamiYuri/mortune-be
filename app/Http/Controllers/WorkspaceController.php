@@ -144,16 +144,21 @@ class WorkspaceController extends Controller
      */
     public function store(Request $req)
     {
-        $ws = new WorkSpace;
-        $ws->name = $req->name;
-        $ws->description = $req->description;
-        $ws->created_at = now();
-        $ws->updated_at = now();
-        $ws->save();//luu dl vaof database
+        try {
+            $ws = new WorkSpace;
+            $ws->name = $req->name;
+            $ws->description = $req->description;
+            $ws->created_at = now();
+            $ws->updated_at = now();
+            $ws->save();//luu dl vaof database
 
-        //gui ve dl sau khi them
-        $data = DB::table("workspaces")->get();
-        return response()->json($data);
+            //gui ve dl sau khi them
+            $data = DB::table("workspaces")->get();
+            return $this->success($data);
+        } catch (\Exception $error) {
+            return $this->error($error, 404);
+        }
+        
     }
 
     #[OA\Get(
@@ -209,8 +214,12 @@ class WorkspaceController extends Controller
     public function show($id)
     {
 
-        $data = DB::table('workspaces')->find($id);
-        return response()->json($data);
+        try {
+            $data = DB::table('workspaces')->find($id);
+            return $this->success($data);
+        } catch (\Exception $error) {
+            return $this->error($error, 404);
+        }
     }
 
     /**
@@ -284,18 +293,22 @@ class WorkspaceController extends Controller
      */
     public function update(Request $req, int $id)
     {
-        $name = $req->name;
-        $description = $req->description;
-        $created_at = now();
-        $updated_at = now();
+        try {
+            $name = $req->name;
+            $description = $req->description;
+            $created_at = now();
+            $updated_at = now();
 
-        DB::table('workspaces')
-            ->where('id', $id)
-            ->update(['name' => $name, 'description'=> $description, 'created_at'=> $created_at, 'updated_at'=> $updated_at]);
+            DB::table('workspaces')
+                ->where('id', $id)
+                ->update(['name' => $name, 'description'=> $description, 'created_at'=> $created_at, 'updated_at'=> $updated_at]);
 
-        //gui ve dl sau khi them
-        $data = DB::table("workspaces")->get();
-        return response()->json($data);
+            //gui ve dl sau khi them
+            $data = DB::table("workspaces")->get();
+            return $this->success($data);
+        } catch (\Exception $error) {
+            return $this->error($error, 404);
+        }
     }
 
     #[OA\Delete(
@@ -350,11 +363,14 @@ class WorkspaceController extends Controller
      */
     public function destroy(int $id)
     {
-
-        $deleted = DB::table('workspaces')->where('id', '=', $id)->delete();
-        //gui ve dl sau khi them
-        $data = DB::table("workspaces")->get();
-        return response()->json($data);
+        try {
+            $deleted = DB::table('workspaces')->where('id', '=', $id)->delete();
+            //gui ve dl sau khi them
+            $data = DB::table("workspaces")->get();
+            return $this->success($data);
+        } catch (\Exception $error) {
+            return $this->error($error, 404);
+        }
     }
 
     //get list user by workspace id
@@ -411,10 +427,14 @@ class WorkspaceController extends Controller
     public function getListUserByIdWs($id)
     {
 
-        //$data = DB::table('workspaces')->find($id);
-        $data = DB::table('users')->join('member_workspace', 'users.id', '=', 'member_workspace.member_id')
-        ->where('member_workspace.workspace_id', '=', $id)
-        ->select('users.id', 'member_workspace.role', 'users.username', 'users.updated_at', 'users.created_at')->get();
-        return response()->json($data);
+        try {
+            //$data = DB::table('workspaces')->find($id);
+            $data = DB::table('users')->join('member_workspace', 'users.id', '=', 'member_workspace.member_id')
+            ->where('member_workspace.workspace_id', '=', $id)
+            ->select('users.id', 'member_workspace.role', 'users.username', 'users.updated_at', 'users.created_at')->get();    
+            return $this->success($data);
+        } catch (\Exception $error) {
+            return $this->error($error, 404);
+        }
     }
 }
