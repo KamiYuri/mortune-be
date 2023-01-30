@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Http\Helpers\Helper;
 
@@ -25,7 +26,7 @@ use App\Traits\HttpResponses;
 
 class CardListController extends Controller
 {
-    
+
     use HttpResponses;
     /**
      * Display a listing of the resource.
@@ -41,7 +42,7 @@ class CardListController extends Controller
                     mediaType: "application/json",
                     schema: new Schema(
                         properties: [
-                            
+
                         ],
                         example: ''
                     ),
@@ -140,7 +141,7 @@ class CardListController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -150,7 +151,7 @@ class CardListController extends Controller
             if(is_null($request->board_id) || is_null($request->title)){
                 return $this->error('Missing field!', 401);
             }
-            
+
             $card_list = CardList::where('board_id', $request->board_id)->where('title', $request->title)->first();
             if(!is_null($card_list)){
                 return $this->error('Title already exists!', 401);
@@ -160,12 +161,12 @@ class CardListController extends Controller
             $newCardList->title = $request->title;
             $newCardList->board_id = $request->board_id;
             $newCardList->archived = $request->archived;
-            
+
             $newCardList->save();
 
-            return response()->json(['code' => '200', 
+            return response()->json(['code' => '200',
                 'message' => 'Create card list successfully!']);
-            
+
         }catch(Exception $error){
             return $this->error('Error when creating list', 500);
         }
@@ -174,14 +175,18 @@ class CardListController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id)
     {
-        $cards = Card::where('list_id', $id)->get();
-        return $this->success($cards, 'OK');
+        try {
+            $card_list = CardList::findOrFail($id);
 
+            return $this->success($card_list);
+        } catch (ModelNotFoundException $error) {
+            return $this->error("Error ".$error, 404);
+        }
     }
 
     /**
@@ -209,7 +214,7 @@ class CardListController extends Controller
                         ],
                         example: [
                             "id" => 1,
-                            "title" => "sone title"     
+                            "title" => "sone title"
                         ]
                     ),
                 )
@@ -233,7 +238,7 @@ class CardListController extends Controller
                             "title" => "abc"
                         ]
                     ]
-        
+
                 ),
             ),
             new Response(response: 500, description: "Error in update workspace"),
@@ -246,7 +251,7 @@ class CardListController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -268,7 +273,7 @@ class CardListController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
 
     #[OA\Delete(
@@ -307,10 +312,10 @@ class CardListController extends Controller
             try{
                 $cardList = DB::table('card_lists')->where('id', $id)->first();
             }catch(Exception $err){
-                return $this->err("Card list with id ", $id, " doesn't exist!");
+                return $this->error("Card list with id ", $id, " doesn't exist!");
             }
             $cardList = CardList::where('id', $id)->delete();
-            return response()->json(['code' => '200', 
+            return response()->json(['code' => '200',
                 'message' => 'Delete card list successfully!']);
         } catch(Exception $error){
             return $this->error('Error when deleting card list!', 500);

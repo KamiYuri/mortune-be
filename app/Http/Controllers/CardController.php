@@ -27,7 +27,7 @@ class CardController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
@@ -48,7 +48,7 @@ class CardController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -86,18 +86,14 @@ class CardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id)
     {
         try {
-            $card = Card::where('id', $id)->first();
-            if(is_null($card)){
-                return $this->error('Not found result for card!', 401);
-            }else{
-                return $this->success($card, 'Found result for card!');
-            }
+            $card = Card::findOrFail($id);
+            return $this->success($card, 'Found result for card!');
         }catch(Exception $error){
             return $this->error("Error when display card!", 500);
         }
@@ -119,7 +115,7 @@ class CardController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -147,7 +143,7 @@ class CardController extends Controller
                 }
 
                 return $this->success($card, 'Updating card successfully!');
-                
+
             }
         }catch(Exception $error){
             return $this->error("Error when updating card!", 500);
@@ -158,7 +154,7 @@ class CardController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
@@ -169,7 +165,7 @@ class CardController extends Controller
             }else{
                 $card->delete();
                 return $this->success(null, 'Delete card successfully!');
-            } 
+            }
         }catch(Exception $error){
             return $this->error('Error when deleting card!', 500);
         }
