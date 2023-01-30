@@ -8,6 +8,7 @@ use App\Http\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Models\CardList;
 use App\Models\Board;
+use App\Models\Card;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -178,7 +179,8 @@ class CardListController extends Controller
      */
     public function show($id)
     {
-        //
+        $cards = Card::where('list_id', $id)->get();
+        return $this->success($cards, 'OK');
 
     }
 
