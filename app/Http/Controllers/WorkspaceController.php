@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Workspace;
+use App\Models\WorkspaceMember;
 
 use Illuminate\Http\Request;
 use Exception;
@@ -147,16 +148,29 @@ class WorkspaceController extends Controller
     public function store(Request $req)
     {
         try {
+            if(is_null($req->name) || is_null($req->description)){
+                return $this->error("Missing fields!", 401);
+            }
+
             $ws = new WorkSpace;
             $ws->name = $req->name;
             $ws->description = $req->description;
             $ws->created_at = now();
             $ws->updated_at = now();
-            $ws->save();//luu dl vaof database
 
+            $ws->save();//luu dl vaof database
+            $user_id = auth()->id();
+            $ws_member = new WorkspaceMember;
+            $ws_member->member_id = $user_id;
+            $ws_member->workspace_id = $ws->id;
+            $ws_member->role = 1;
+            $ws_member->created_at = now();
+            $ws_member->updated_at = now();
+            $ws_member->save();
             //gui ve dl sau khi them
-            $data = DB::table("workspaces")->get();
-            return $this->success($data);
+
+
+            return $this->success($ws, 'OK');
         } catch (\Exception $error) {
             return $this->error($error, 404);
         }
