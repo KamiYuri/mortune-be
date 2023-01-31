@@ -450,6 +450,7 @@ class BoardController extends Controller
             } else {
 
                 Board::where('id', $id)->delete();
+                BoardMember::where('board_id', $id)->delete();
 
                 return response()->json(
                     [

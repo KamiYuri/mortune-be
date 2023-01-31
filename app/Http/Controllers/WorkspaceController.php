@@ -381,6 +381,7 @@ class WorkspaceController extends Controller
     {
         try {
             $deleted = DB::table('workspaces')->where('id', '=', $id)->delete();
+            $workspace_member = DB::table('member_workspace')->where('workspace_id', $id)->delete();
             //gui ve dl sau khi them
             $data = DB::table("workspaces")->get();
             return $this->success($data);
