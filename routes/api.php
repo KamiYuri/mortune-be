@@ -31,8 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/card_list', CardListController::class);
 
     Route::resource('/card', CardController::class);
-    Route::post('/cardlist/board', [CardListController::class, "getByBoard"]);
+    Route::get('/cardlist/board/{board_id}', [CardListController::class, "getCardListByBoard"]);
+    Route::get('/card/cardlist/{list_id}', [CardController::class, "getCardByCardList"]);
 });
 
 Route::resource('/task', TaskController::class);
 Route::get('/workspace/user/{id}', [WorkspaceController::class, "getWorkspaceByUserId"]);
+Route::get('/card/cardlist/{list_id}', [CardController::class, "getCardByCardList"]);
+
