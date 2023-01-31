@@ -8,6 +8,7 @@ use App\Http\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Models\CardList;
 use App\Models\Card;
+use App\Models\CardMember;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -177,6 +178,35 @@ class CardController extends Controller
             $cards = Card::where('list_id', $list_id)->get();
             $card_list->cards = $cards;
             return $this->success($card_list, 'OK');
+        }catch(Exception $error){
+            return $this->error($error, 500);
+        }
+
+    }
+
+    public function addMemberToCard(Request $request){
+        try{
+            if(is_null($request->card_id) || is_null($request->member_id)){
+                return $this->error("Missing fields!", 401);
+            }
+            $user_id = $request->member_id;
+            $card_id = $request->card_id;
+            $card_mb = DB::table('card_member')->where('member_id', $user_id)->where('card_id', $card_id)
+            ->first();
+
+            if(!is_null($card_mb)){
+                return $this->error('Member already in this card!', 402);
+            }
+
+            $card_member = new CardMember;
+            $card_member->member_id = $user_id;
+            $card_member->card_id = $card_id;
+            $card_member->role = 2;
+            $card_member->created_at = now();
+            $card_member->updated_at = now();
+            $card_member->save();
+
+            return $this->success($card_member, 'OK');
         }catch(Exception $error){
             return $this->error($error, 500);
         }
