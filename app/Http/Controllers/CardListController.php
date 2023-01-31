@@ -322,12 +322,16 @@ class CardListController extends Controller
 
     //TODO add try-catch
     public function getByBoard(Request $request) {
-        $board_id = $request["board_id"];
+        try{
+            $board_id = $request["board_id"];
 
-        $board = Board::find($board_id);
-        $card_lists = $board->cardLists;
+            $board = Board::find($board_id);
+            $card_lists = $board->cardLists;
 
-        return $this->success($card_lists);
+            return $this->success($card_lists);
+        }catch(Exception $error){
+            return $this->error($error, 500);
+        }
     }
 
     public function getCardInfo(Request $request){
