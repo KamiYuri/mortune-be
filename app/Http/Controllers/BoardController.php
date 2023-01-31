@@ -774,10 +774,10 @@ class BoardController extends Controller
                     ]
                 ),
             ),
+            new Response(response: 205, description: "User is not member of workspace"),
             new Response(response: 400, description: "Parameter type is invalid!!!"),
-            new Response(response: 400, description: "User is not member of workspace"),
-            new Response(response: 404, description: "Not found user!!!"),
-            new Response(response: 404, description: "Not found workspace!!!"),
+            new Response(response: 404_1, description: "Not found user!!!"),
+            new Response(response: 404_2, description: "Not found workspace!!!"),
             new Response(response: 500, description: "Failed to get data!!!"),
         ],
     )]
@@ -793,17 +793,17 @@ class BoardController extends Controller
 
             if (DB::table('users')->where('id', $id_user)->first() == null ) {
                 return response()->json([
-                    'code' => '404',
+                    'code' => '404_1',
                     'message' => 'Not found user!!!'
                 ]);
             } else if (DB::table('workspaces')->where('id', $id_workspace)->first() == null) {
                 return response()->json([
-                    'code' => '404',
+                    'code' => '404_2',
                     'message' => 'Not found workspace!!!'
                 ]);
             } else if (DB::table('member_workspace')->where('member_id', $id_user )->where('workspace_id', $id_workspace )->first()==null){
                 return response()->json([
-                    'code' => '400',
+                    'code' => '205',
                     'message' => 'User is not member of workspace'
                 ]);
             } else {

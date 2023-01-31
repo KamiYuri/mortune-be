@@ -150,6 +150,1022 @@
                     }
                 }
             }
+        },
+        "/board": {
+            "get": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get data boards",
+                "description": "Display a listing of the resource.",
+                "operationId": "board_index",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {},
+                                "example": []
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get data board succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "user": {
+                                        "id": 1,
+                                        "title": "iure",
+                                        "workspace_id": 1,
+                                        "closed": 1,
+                                        "updated_at": "2023-01-08 01:04:24",
+                                        "created_at": "2023-01-08 01:04:24"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get data board!!!"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Create a new board",
+                "description": "Show the form for creating a new resource.",
+                "operationId": "board_create",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "workspace_id": {
+                                        "type": "integer"
+                                    },
+                                    "closed": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "title": "iure",
+                                    "workspace_id": 1,
+                                    "closed": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Create board succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "user": {
+                                        "id": 1,
+                                        "title": "iure",
+                                        "workspace_id": 1,
+                                        "closed": 1,
+                                        "updated_at": "2023-01-08 01:04:24",
+                                        "created_at": "2023-01-08 01:04:24"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create board!!!"
+                    }
+                }
+            }
+        },
+        "/board/{id}": {
+            "get": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get data a board by ID",
+                "description": "Display the specified resource.",
+                "operationId": "board_show_by_ID",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Found board succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "user": {
+                                        "id": 1,
+                                        "title": "iure",
+                                        "workspace_id": 1,
+                                        "closed": 1,
+                                        "updated_at": "2023-01-08 01:04:24",
+                                        "created_at": "2023-01-08 01:04:24"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to found board!!!"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Update board by ID",
+                "description": "Show the form for editing the specified resource.",
+                "operationId": "board_edit_by_ID",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "workspace_id": {
+                                        "type": "integer"
+                                    },
+                                    "closed": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id": 1,
+                                    "title": "iure",
+                                    "workspace_id": 1,
+                                    "closed": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Found board succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "board": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "user": {
+                                        "id": 1,
+                                        "title": "iure",
+                                        "workspace_id": 1,
+                                        "closed": 1,
+                                        "updated_at": "2023-01-08 01:04:24",
+                                        "created_at": "2023-01-08 01:04:24"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to update board!!!"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Delete data a board by ID",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "board_delete_by_ID",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Delete board succesfully!!"
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to delete board!!!"
+                    }
+                }
+            }
+        },
+        "/board/boards_of_user/{id_user}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get boards of user",
+                "operationId": "boards_of_user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_user": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_user": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get boards of user succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "board_id": {
+                                                    "type": "integer"
+                                                },
+                                                "role": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "payload": {
+                                        "board_id": 1,
+                                        "role": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parameter type is invalid!!!"
+                    },
+                    "404": {
+                        "description": "Not found user!!!"
+                    },
+                    "500": {
+                        "description": "Failed to get data!!!"
+                    }
+                }
+            }
+        },
+        "/board/get_membership_of_board/{id_board}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get membership of board",
+                "operationId": "get_membership_of_board",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_board": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_board": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get membership of board succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "member_id": {
+                                                    "type": "integer"
+                                                },
+                                                "role": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "payload": {
+                                        "member_id": 1,
+                                        "role": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parameter type is invalid!!!"
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to get data!!!"
+                    }
+                }
+            }
+        },
+        "/board/boards_with_workspace_of_user/{id_user}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get boards with workspace of user",
+                "operationId": "boards_with_workspace_of_user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_user": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_user": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get cards in board of user succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "board_id": {
+                                                    "type": "integer"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "role": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "payload": {
+                                        "board_id": 1,
+                                        "workspace_id": 1,
+                                        "title": "postx",
+                                        "role": 1,
+                                        "closed": 0
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parameter type is invalid!!!"
+                    },
+                    "404": {
+                        "description": "Not found user!!!"
+                    },
+                    "500": {
+                        "description": "Failed to get data!!!"
+                    }
+                }
+            }
+        },
+        "/board/boards_in_workspace_of_user/{id_user}/{id_workspace}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get boards in workspace of user",
+                "operationId": "boards_in_workspace_of_user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_board": {
+                                        "type": "integer"
+                                    },
+                                    "id_workspace": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_board": 1,
+                                    "id_workspace": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get cards in board of user succesfully!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "board_id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "role": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "payload": {
+                                        "board_id": 1,
+                                        "title": "postx",
+                                        "role": 1,
+                                        "closed": 0
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "205": {
+                        "description": "User is not member of workspace"
+                    },
+                    "400": {
+                        "description": "Parameter type is invalid!!!"
+                    },
+                    "4041": {
+                        "description": "Not found user!!!"
+                    },
+                    "4042": {
+                        "description": "Not found workspace!!!"
+                    },
+                    "500": {
+                        "description": "Failed to get data!!!"
+                    }
+                }
+            }
+        },
+        "/board/getWorkspaceByBoard/{id_board}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get Workspace By Board",
+                "operationId": "getWorkspaceByBoard",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_board": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_board": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get workspace by board succesfully!!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "payload": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "workspace": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "description": {
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "payload": {
+                                        "id": 1,
+                                        "title": "postx",
+                                        "workspace_id": 1,
+                                        "closed": 0,
+                                        "created_at": "2023-01-29T16:03:21.000000Z",
+                                        "updated_at": "2023-01-29T16:03:21.000000Z",
+                                        "members": [
+                                            {
+                                                "id": 1,
+                                                "name": "eos",
+                                                "description": "Incidunt molestias molestiae repellendus illum rerum sint exercitationem exercitationem",
+                                                "created_at": "2023-01-29T16:03:21.000000Z",
+                                                "updated_at": "2023-01-29T16:03:21.000000Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Paramater type is invalid!!!"
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to get workspace by board!!!"
+                    }
+                }
+            }
+        },
+        "/board/getCardListsByBoard/{id_board}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get Cardlist By Board",
+                "operationId": "getCardListsByBoard",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_board": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_board": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get cardlists by board succesfully!!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "payload": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "card_lists": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "title": {
+                                                            "type": "string"
+                                                        },
+                                                        "board_id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "archived": {
+                                                            "type": "integer"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "payload": {
+                                        "id": 1,
+                                        "title": "postx",
+                                        "workspace_id": 1,
+                                        "closed": 0,
+                                        "created_at": "2023-01-29T16:03:21.000000Z",
+                                        "updated_at": "2023-01-29T16:03:21.000000Z",
+                                        "members": [
+                                            {
+                                                "id": 1,
+                                                "title": "sit",
+                                                "board_id": 1,
+                                                "archived": 0,
+                                                "created_at": "2023-01-29T16:03:21.000000Z",
+                                                "updated_at": "2023-01-29T16:03:21.000000Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Paramater type is invalid!!!"
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to get cardlists by board!!!"
+                    }
+                }
+            }
+        },
+        "/board/getMembersByBoard/{id_board}": {
+            "post": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get Members By Board",
+                "operationId": "getMembersByBoard",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_board": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "id_board": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get members by board succesfully!!!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "payload": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "workspace_id": {
+                                                    "type": "integer"
+                                                },
+                                                "closed": {
+                                                    "type": "integer"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "members": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "username": {
+                                                            "type": "string"
+                                                        },
+                                                        "password": {
+                                                            "type": "integer"
+                                                        },
+                                                        "email": {
+                                                            "type": "integer"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "pivot": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "board_id": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "member_id": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "role": {
+                                                                    "type": "integer"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "payload": {
+                                        "id": 1,
+                                        "title": "postx",
+                                        "workspace_id": 1,
+                                        "closed": 0,
+                                        "created_at": "2023-01-29T16:03:21.000000Z",
+                                        "updated_at": "2023-01-29T16:03:21.000000Z",
+                                        "members": [
+                                            {
+                                                "id": 1,
+                                                "username": "steuber.garnet",
+                                                "password": "$2y$10\\$XrPo.eAKaUNeZ3elope57.XD11J611nOPNumpKZzcdza2eR7NeaAm",
+                                                "email": "reichel.trisha@example.net",
+                                                "created_at": "2023-01-29T16:03:21.000000Z",
+                                                "updated_at": "2023-01-29T16:03:21.000000Z",
+                                                "pivot": {
+                                                    "board_id": 1,
+                                                    "member_id": 1,
+                                                    "role": 1
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Paramater type is invalid!!!"
+                    },
+                    "404": {
+                        "description": "Not found board!!!"
+                    },
+                    "500": {
+                        "description": "Failed to get members by board!!!"
+                    }
+                }
+            }
         }
     }
 }
