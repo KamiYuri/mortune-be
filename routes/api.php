@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/workspace/user/{id}', [WorkspaceController::class, 'getListUserByIdWs']);
     Route::get('/workspace/user/{id}', [WorkspaceController::class, "getWorkspaceByUserId"]);
+    Route::post('/workspace/add_member', [WorkspaceController::class, "addMemberToWorkspace"]);
     
     Route::post('board/boards_of_user/{id_user}', [BoardController::class, 'boards_of_user']);
     Route::post('board/boards_with_workspace_of_user/{id_user}', [BoardController::class, 'boards_with_workspace_of_user']);

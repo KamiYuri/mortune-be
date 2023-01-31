@@ -466,4 +466,35 @@ class WorkspaceController extends Controller
             return $this->success($error, 500);
         }
     }
+
+    public function addMemberToWorkspace(Request $request){
+        try{
+            if(is_null($request->workspace_id) || is_null($request->member_id)){
+                return $this->error("Missing fields!", 401);
+            }
+            $user_id = $request->member_id;
+            $workspace_id = $request->workspace_id;
+            $ws_mb = DB::table('member_workspace')->where('member_id', $user_id)->where('workspace_id', $workspace_id)
+            ->first();
+
+            if(!is_null($ws_mb)){
+                return $this->error('Member already in this workspace!', 402);
+            }
+
+            $ws_member = new WorkspaceMember;
+            $ws_member->member_id = $user_id;
+            $ws_member->workspace_id = $workspace_id;
+            $ws_member->role = 2;
+            $ws_member->created_at = now();
+            $ws_member->updated_at = now();
+            $ws_member->save();
+
+            return $this->success($ws_member, 'OK');
+        }catch(Exception $error){
+            return $this->error($error, 500);
+        }
+        
+
+
+    }
 }
