@@ -471,18 +471,18 @@ class BoardController extends Controller
     // boards_of_user
 
     #[post(
-        path: "/board/boards_of_user/{id_member}",
+        path: "/board/boards_of_user/{id_user}",
         operationId: "boards_of_user",
-        summary: "Get all board of user",
+        summary: "Get boards of user",
         requestBody: new RequestBody(
             content: [
                 new MediaType(
                     mediaType: "application/json",
                     schema: new Schema(
                         properties: [
-                            new Property(property: "id_member", type: "int"),
+                            new Property(property: "id_user", type: "int"),
                         ],
-                        example: ["id_member" => 1]
+                        example: ["id_user" => 1]
                     ),
                 )
             ]
@@ -491,30 +491,25 @@ class BoardController extends Controller
         responses: [
             new Response(
                 response: 200,
-                description: "Get cards in board of user succesfully!!",
+                description: "Get boards of user succesfully!!",
                 content: new JsonContent(
                     properties: [
-                        new Property(property: "board", properties: [
+                        new Property(property: "data", properties: [
                             new Property(property: "board_id", type: "int"),
-                            new Property(property: "member_id", type: "int"),
                             new Property(property: "role", type: "int"),
-                            new Property(property: "updated_at", type: "string"),
-                            new Property(property: "created_at", type: "string"),
                         ], type: "object"),
                     ],
                     example: [
-                        [
+                        "payload" => [
                             "board_id" => 1,
-                            "member_id" => 1,
                             "role" => 1,
-                            "created_at" => "2023-01-08 01:04:25",
-                            "updated_at" => "2023-01-08 01:04:25"
-                        ],
+                        ]
                     ]
                 ),
             ),
+            new Response(response: 400, description: "Parameter type is invalid!!!"),
             new Response(response: 404, description: "Not found user!!!"),
-            new Response(response: 500, description: "Failed to delete board!!!"),
+            new Response(response: 500, description: "Failed to get data!!!"),
         ],
     )]
     public function boards_of_user($id_user)
@@ -542,7 +537,7 @@ class BoardController extends Controller
                 return response()->json(
                     [
                         'code' => '200',
-                        'message' => 'Get cards in board of user succesfully',
+                        'message' => 'Get boards of user succesfully',
                         'data' => $data
                     ]
                 );
@@ -551,7 +546,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to show cards in board!!!'
+                    'message' => 'Failed to get data!!!'
                 ]
             );
         }
@@ -560,7 +555,48 @@ class BoardController extends Controller
     // end boards_of_user
 
     // get membership of board 
-
+    #[post(
+        path: "/board/get_membership_of_board/{id_board}",
+        operationId: "get_membership_of_board",
+        summary: "Get membership of board",
+        requestBody: new RequestBody(
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id_board", type: "int"),
+                        ],
+                        example: ["id_board" => 1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Board"],
+        responses: [
+            new Response(
+                response: 200,
+                description: "Get membership of board succesfully!!",
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "data", properties: [
+                            new Property(property: "member_id", type: "int"),
+                            new Property(property: "role", type: "int")
+                        ], type: "object"),
+                    ],
+                    example: [
+                        "payload" => [
+                            "member_id" => 1,
+                            "role" => 1,
+                        ]
+                    ]
+                ),
+            ),
+            new Response(response: 400, description: "Parameter type is invalid!!!"),
+            new Response(response: 404, description: "Not found board!!!"),
+            new Response(response: 500, description: "Failed to get data!!!"),
+        ],
+    )]
     public function get_membership_of_board ($id_board)
     {
         try {
@@ -594,7 +630,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to get membership of board!!!'
+                    'message' => 'Failed to get data!!!'
                 ]
             );
         }
@@ -604,7 +640,54 @@ class BoardController extends Controller
     
 
     // boards_with_workspace_of_user
-
+    #[post(
+        path: "/board/boards_with_workspace_of_user/{id_user}",
+        operationId: "boards_with_workspace_of_user",
+        summary: "Get boards with workspace of user",
+        requestBody: new RequestBody(
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id_user", type: "int"),
+                        ],
+                        example: ["id_user" => 1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Board"],
+        responses: [
+            new Response(
+                response: 200,
+                description: "Get cards in board of user succesfully!!",
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "data", properties: [
+                            new Property(property: "board_id", type: "int"),
+                            new Property(property: "workspace_id", type: "int"),
+                            new Property(property: "title", type: "string"),
+                            new Property(property: "role", type: "int"),
+                            new Property(property: "closed", type: "int"),
+                        ], type: "object"),
+                    ],
+                    example: [
+                        "payload" => [
+                            "board_id" => 1,
+                            "workspace_id" => 1,
+                            "title" => "postx",
+                            "role" => 1,
+                            "closed" => 0,
+                        ]
+                    ]
+                ),
+            ),
+            new Response(response: 400, description: "Parameter type is invalid!!!"),
+            new Response(response: 404, description: "Not found user!!!"),
+            new Response(response: 500, description: "Failed to get data!!!"),
+        ],
+    )]
     public function boards_with_workspace_of_user($id_user)
     {
         try {
@@ -640,7 +723,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to show cards in board!!!'
+                    'message' => 'Failed to get data!!!'
                 ]
             );
         }
@@ -649,21 +732,20 @@ class BoardController extends Controller
     // end boards_with_workspace_of_user
 
     // boards_in_workspace_of_user
-
     #[post(
         path: "/board/boards_in_workspace_of_user/{id_user}/{id_workspace}",
         operationId: "boards_in_workspace_of_user",
-        summary: "Get all board in workspace of user",
+        summary: "Get boards in workspace of user",
         requestBody: new RequestBody(
             content: [
                 new MediaType(
                     mediaType: "application/json",
                     schema: new Schema(
                         properties: [
-                            new Property(property: "id_user", type: "int"),
+                            new Property(property: "id_board", type: "int"),
                             new Property(property: "id_workspace", type: "int"),
                         ],
-                        example: ["id_user" => 1, "id_workspace" => 1]
+                        example: ["id_board" => 1,"id_workspace" => 1]
                     ),
                 )
             ]
@@ -675,30 +757,30 @@ class BoardController extends Controller
                 description: "Get cards in board of user succesfully!!",
                 content: new JsonContent(
                     properties: [
-                        new Property(property: "board", properties: [
+                        new Property(property: "data", properties: [
                             new Property(property: "board_id", type: "int"),
-                            new Property(property: "member_id", type: "int"),
+                            new Property(property: "title", type: "string"),
                             new Property(property: "role", type: "int"),
-                            new Property(property: "updated_at", type: "string"),
-                            new Property(property: "created_at", type: "string"),
+                            new Property(property: "closed", type: "int"),
                         ], type: "object"),
                     ],
                     example: [
-                        [
+                        "payload" => [
                             "board_id" => 1,
-                            "member_id" => 1,
+                            "title" => "postx",
                             "role" => 1,
-                            "created_at" => "2023-01-08 01:04:25",
-                            "updated_at" => "2023-01-08 01:04:25"
-                        ],
+                            "closed" => 0,
+                        ]
                     ]
                 ),
             ),
+            new Response(response: 400, description: "Parameter type is invalid!!!"),
+            new Response(response: 400, description: "User is not member of workspace"),
             new Response(response: 404, description: "Not found user!!!"),
-            new Response(response: 500, description: "Failed to delete board!!!"),
+            new Response(response: 404, description: "Not found workspace!!!"),
+            new Response(response: 500, description: "Failed to get data!!!"),
         ],
     )]
-
     public function boards_in_workspace_of_user($id_user, $id_workspace)
     {
         try {
@@ -746,7 +828,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to show cards in board!!!'
+                    'message' => 'Failed to get data!!!'
                 ]
             );
         }
@@ -754,6 +836,70 @@ class BoardController extends Controller
     // end boards_in_workspace_of_user
     
     // getWorkspaceByBoard
+    #[post(
+        path: "/board/getWorkspaceByBoard/{id_board}",
+        operationId: "getWorkspaceByBoard",
+        summary: "Get Workspace By Board",
+        requestBody: new RequestBody(
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id_board", type: "int"),
+                        ],
+                        example: ["id_board" => 1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Board"],
+        responses: [
+            new Response(
+                response: 200,
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "payload", properties: [
+                            new Property(property: "id", type: "int"),
+                            new Property(property: "title", type: "string"),
+                            new Property(property: "workspace_id", type: "int"),
+                            new Property(property: "closed", type: "int"),
+                            new Property(property: "updated_at", type: "string"),
+                            new Property(property: "created_at", type: "string"),
+                            new Property(property: "workspace", properties: [
+                                new Property(property: "id", type: "int"),
+                                new Property(property: "name", type: "string"),
+                                new Property(property: "description", type: "string"),
+                                new Property(property: "updated_at", type: "string"),
+                                new Property(property: "created_at", type: "string"),
+                            ], type: "object"),
+                        ], type: "object"),
+                    ],
+                    example: [
+                        "payload" => [
+                            "id" => 1,
+                            "title" => "postx",
+                            "workspace_id" => 1,
+                            "closed" => 0,
+                            "created_at" => "2023-01-29T16:03:21.000000Z",
+                            "updated_at" => "2023-01-29T16:03:21.000000Z",
+                            "members"  => [
+                                [
+                                    "id" => 1,
+                                    "name" => "eos",
+                                    "description" => "Incidunt molestias molestiae repellendus illum rerum sint exercitationem exercitationem",
+                                    "created_at" => "2023-01-29T16:03:21.000000Z",
+                                    "updated_at" => "2023-01-29T16:03:21.000000Z",
+                                ]
+                            ]
+                        ]
+                    ]
+                ),
+            ),
+            new Response(response: 404, description: "Not found board!!!"),
+            new Response(response: 500, description: "Failed to workspace by board!!!"),
+        ],
+    )]
     public function getWorkspaceByBoard($id_board)
     {
         try {
@@ -776,7 +922,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to show cards in board!!!'
+                    'message' => 'Failed to workspace by board!!!'
                 ]
             );
         }
@@ -784,6 +930,72 @@ class BoardController extends Controller
     // end getWorkspaceByBoard
 
     // getCardListsByBoard
+    #[post(
+        path: "/board/getCardListsByBoard/{id_board}",
+        operationId: "getCardListsByBoard",
+        summary: "Get Cardlist By Board",
+        requestBody: new RequestBody(
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id_board", type: "int"),
+                        ],
+                        example: ["id_board" => 1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Board"],
+        responses: [
+            new Response(
+                response: 200,
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "payload", properties: [
+                            new Property(property: "id", type: "int"),
+                            new Property(property: "title", type: "string"),
+                            new Property(property: "workspace_id", type: "int"),
+                            new Property(property: "closed", type: "int"),
+                            new Property(property: "updated_at", type: "string"),
+                            new Property(property: "created_at", type: "string"),
+                            new Property(property: "card_lists", properties: [
+                                new Property(property: "id", type: "int"),
+                                new Property(property: "title", type: "string"),
+                                new Property(property: "board_id", type: "int"),
+                                new Property(property: "archived", type: "int"),
+                                new Property(property: "updated_at", type: "string"),
+                                new Property(property: "created_at", type: "string"),
+                            ], type: "object"),
+                        ], type: "object"),
+                    ],
+                    example: [
+                        "payload" => [
+                            "id" => 1,
+                            "title" => "postx",
+                            "workspace_id" => 1,
+                            "closed" => 0,
+                            "created_at" => "2023-01-29T16:03:21.000000Z",
+                            "updated_at" => "2023-01-29T16:03:21.000000Z",
+                            "members"  => [
+                                [
+                                    "id" => 1,
+                                    "title" => "sit",
+                                    "board_id" => 1,
+                                    "archived" => 0,
+                                    "created_at" => "2023-01-29T16:03:21.000000Z",
+                                    "updated_at" => "2023-01-29T16:03:21.000000Z",
+                                ]
+                            ]
+                        ]
+                    ]
+                ),
+            ),
+            new Response(response: 404, description: "Not found board!!!"),
+            new Response(response: 500, description: "Failed to get cardlist by board!!!"),
+        ],
+    )]
     public function getCardListsByBoard($id_board)
     {
         try {
@@ -813,7 +1025,86 @@ class BoardController extends Controller
     } 
     // end getCardListsByBoard
 
+
+
     // getMembersByBoard
+    #[post(
+        path: "/board/getMembersByBoard/{id_board}",
+        operationId: "getMembersByBoard",
+        summary: "Get Members By Board",
+        requestBody: new RequestBody(
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id_board", type: "int"),
+                        ],
+                        example: ["id_board" => 1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Board"],
+        responses: [
+            new Response(
+                response: 200,
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "payload", properties: [
+                            new Property(property: "id", type: "int"),
+                            new Property(property: "title", type: "string"),
+                            new Property(property: "workspace_id", type: "int"),
+                            new Property(property: "closed", type: "int"),
+                            new Property(property: "updated_at", type: "string"),
+                            new Property(property: "created_at", type: "string"),
+                            new Property(property: "members", properties: [
+                                new Property(property: "id", type: "int"),
+                                new Property(property: "username", type: "string"),
+                                new Property(property: "password", type: "int"),
+                                new Property(property: "email", type: "int"),
+                                new Property(property: "updated_at", type: "string"),
+                                new Property(property: "created_at", type: "string"),
+                                new Property(property: "pivot", properties: [
+                                    new Property(property: "id", type: "int"),
+                                    new Property(property: "board_id", type: "int"),
+                                    new Property(property: "member_id", type: "int"),
+                                    new Property(property: "role", type: "int"),
+                                ], type: "object"),
+                            ], type: "object"),
+                        ], type: "object"),
+                    ],
+                    example: [
+                        "payload" => [
+                            "id" => 1,
+                            "title" => "postx",
+                            "workspace_id" => 1,
+                            "closed" => 0,
+                            "created_at" => "2023-01-29T16:03:21.000000Z",
+                            "updated_at" => "2023-01-29T16:03:21.000000Z",
+                            "members"  => [
+                                [
+                                    "id" => 1,
+                                    "username" => "steuber.garnet",
+                                    "password" => '$2y$10\$XrPo.eAKaUNeZ3elope57.XD11J611nOPNumpKZzcdza2eR7NeaAm',
+                                    "email" => "reichel.trisha@example.net",
+                                    "created_at" => "2023-01-29T16:03:21.000000Z",
+                                    "updated_at" => "2023-01-29T16:03:21.000000Z",
+                                    "pivot" => [
+                                        "board_id" => 1,
+                                        "member_id" => 1,
+                                        "role" => 1
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ),
+            ),
+            new Response(response: 404, description: "Not found board!!!"),
+            new Response(response: 500, description: "Failed to get members by board!!!"),
+        ],
+    )]
     public function getMembersByBoard($id_board)
     {
         try {
@@ -836,7 +1127,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to show cards in board!!!'
+                    'message' => 'Failed to get members by board!!!'
                 ]
             );
         }
