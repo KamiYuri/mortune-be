@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Board;
 use App\Models\CardList;
+use App\Models\BoardMember;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes\MediaType;
@@ -21,11 +22,12 @@ use OpenApi\Attributes\Response;
 use OpenApi\Attributes\Schema;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes as OA;
-
-
+use App\Traits\HttpResponses;
 
 class BoardController extends Controller
 {
+
+    use HttpResponses;
     // index
     #[get(
         path: "/board",
@@ -1163,4 +1165,33 @@ class BoardController extends Controller
         }
     } 
     // end getMembersByBoard
+
+    public function addMemberToBoard(Request $request){
+        try{
+            if(is_null($request->board_id) || is_null($request->member_id)){
+                return $this->error("Missing fields!", 401);
+            }
+            $user_id = $request->member_id;
+            $board_id = $request->board_id;
+            $board_mb = DB::table('board_member')->where('member_id', $user_id)->where('board_id', $board_id)
+            ->first();
+
+            if(!is_null($board_mb)){
+                return $this->error('Member already in this board!', 402);
+            }
+
+            $board_member = new BoardMember;
+            $board_member->member_id = $user_id;
+            $board_member->board_id = $board_id;
+            $board_member->role = 2;
+            $board_member->created_at = now();
+            $board_member->updated_at = now();
+            $board_member->save();
+
+            return $this->success($board_member, 'OK');
+        }catch(Exception $error){
+            return $this->error($error, 500);
+        }
+
+    }
 }

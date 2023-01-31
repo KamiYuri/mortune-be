@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('board/getWorkspaceByBoard/{id_board}', [BoardController::class, 'getWorkspaceByBoard']);
     Route::post('board/getCardListsByBoard/{id_board}', [BoardController::class, 'getCardListsByBoard']);
     Route::post('board/getMembersByBoard/{id_board}', [BoardController::class, 'getMembersByBoard']);
+    Route::post('board/add_member', [BoardController::class, 'addMemberToBoard']);
 });
 
 
