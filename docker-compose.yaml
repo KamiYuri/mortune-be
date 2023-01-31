@@ -26,6 +26,8 @@ services:
       - redis
     expose:
       - "9000"
+    ports:
+      - 8000:8000
 
   nginx:
     container_name: nginx
