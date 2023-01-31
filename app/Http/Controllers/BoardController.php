@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Models\Board;
-
+use App\Models\CardList;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes\MediaType;
@@ -752,4 +752,73 @@ class BoardController extends Controller
         }
     }
     // end boards_in_workspace_of_user
+    
+    // getWorkspaceByBoard
+    public function getWorkspaceByBoard($id_board)
+    {
+        try {
+            $workspace = Board::with("workspace")->find($id_board)->toArray();
+
+            return response()->json(
+                [
+                    'code' => '200',
+                    'payload' => $workspace
+                ]
+            );
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to show cards in board!!!'
+                ]
+            );
+        }
+    } 
+    // end getWorkspaceByBoard
+
+    // getCardListsByBoard
+    public function getCardListsByBoard($id_board)
+    {
+        try {
+            $cardLists = Board::with("cardLists")->find($id_board)->toArray();
+
+            return response()->json(
+                [
+                    'code' => '200',
+                    'payload' => $cardLists
+                ]
+            );
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to show cards in board!!!'
+                ]
+            );
+        }
+    } 
+    // end getCardListsByBoard
+
+    // getMembersByBoard
+    public function getMembersByBoard($id_board)
+    {
+        try {
+            $members = Board::with("members")->find($id_board)->toArray();
+
+            return response()->json(
+                [
+                    'code' => '200',
+                    'payload' => $members
+                ]
+            );
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to show cards in board!!!'
+                ]
+            );
+        }
+    } 
+    // end getMembersByBoard
 }
