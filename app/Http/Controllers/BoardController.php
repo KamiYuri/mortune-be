@@ -857,6 +857,7 @@ class BoardController extends Controller
         responses: [
             new Response(
                 response: 200,
+                description: "Get workspace by board succesfully!!!",
                 content: new JsonContent(
                     properties: [
                         new Property(property: "payload", properties: [
@@ -896,13 +897,21 @@ class BoardController extends Controller
                     ]
                 ),
             ),
+            new Response(response: 400, description: "Paramater type is invalid!!!"),
             new Response(response: 404, description: "Not found board!!!"),
-            new Response(response: 500, description: "Failed to workspace by board!!!"),
+            new Response(response: 500, description: "Failed to get workspace by board!!!"),
         ],
     )]
     public function getWorkspaceByBoard($id_board)
     {
         try {
+            if (!is_numeric($id_board))
+                return response()->json([
+                    'code' => '400',
+                    'message' => 'Parameter type is invalid!!!'
+                ]);
+            
+            
             if (DB::table('boards')->where('id', $id_board)->first() == null){
                 return response()->json([
                     'code' => '404',
@@ -915,6 +924,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '200',
+                    'message' => 'Get workspace by board succesfully!!!',
                     'payload' => $workspace
                 ]
             );
@@ -922,7 +932,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to workspace by board!!!'
+                    'message' => 'Failed to get workspace by board!!!'
                 ]
             );
         }
@@ -951,6 +961,7 @@ class BoardController extends Controller
         responses: [
             new Response(
                 response: 200,
+                description: "Get cardlists by board succesfully!!!",
                 content: new JsonContent(
                     properties: [
                         new Property(property: "payload", properties: [
@@ -992,13 +1003,21 @@ class BoardController extends Controller
                     ]
                 ),
             ),
+            new Response(response: 400, description: "Paramater type is invalid!!!"),
             new Response(response: 404, description: "Not found board!!!"),
-            new Response(response: 500, description: "Failed to get cardlist by board!!!"),
+            new Response(response: 500, description: "Failed to get cardlists by board!!!"),
         ],
     )]
     public function getCardListsByBoard($id_board)
     {
         try {
+            if (!is_numeric($id_board))
+                return response()->json([
+                    'code' => '400',
+                    'message' => 'Parameter type is invalid!!!'
+                ]);
+            
+            
             if (DB::table('boards')->where('id', $id_board)->first() == null){
                 return response()->json([
                     'code' => '404',
@@ -1011,6 +1030,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '200',
+                    'message' => 'Get cardlists by board succesfully!!!',
                     'payload' => $cardLists
                 ]
             );
@@ -1018,7 +1038,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '500',
-                    'message' => 'Failed to show cards in board!!!'
+                    'message' => 'Failed to get cardlists by board!!!'
                 ]
             );
         }
@@ -1049,6 +1069,7 @@ class BoardController extends Controller
         responses: [
             new Response(
                 response: 200,
+                description: "Get members by board succesfully!!!",
                 content: new JsonContent(
                     properties: [
                         new Property(property: "payload", properties: [
@@ -1101,6 +1122,7 @@ class BoardController extends Controller
                     ]
                 ),
             ),
+            new Response(response: 400, description: "Paramater type is invalid!!!"),
             new Response(response: 404, description: "Not found board!!!"),
             new Response(response: 500, description: "Failed to get members by board!!!"),
         ],
@@ -1108,6 +1130,13 @@ class BoardController extends Controller
     public function getMembersByBoard($id_board)
     {
         try {
+            if (!is_numeric($id_board))
+                return response()->json([
+                    'code' => '400',
+                    'message' => 'Parameter type is invalid!!!'
+                ]);
+            
+            
             if (DB::table('boards')->where('id', $id_board)->first() == null){
                 return response()->json([
                     'code' => '404',
@@ -1120,6 +1149,7 @@ class BoardController extends Controller
             return response()->json(
                 [
                     'code' => '200',
+                    'message' => 'Get members by board succesfully!!!',
                     'payload' => $members
                 ]
             );
