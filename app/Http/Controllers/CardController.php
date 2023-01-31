@@ -77,6 +77,14 @@ class CardController extends Controller
 
             $newCard->save();
 
+            $card_member = new CardMember;
+            $card_member->member_id = auth()->id();
+            $card_member->card_id = $newCard->id;
+            $card_member->role = 1;
+            $card_member->created_at = now();
+            $card_member->updated_at = now();
+            $card_member->save();
+
             return $this->success($newCard, 'Create new card successfully!');
         }catch(Exception $error){
             return $this->error("Error when create new card!", 500);
@@ -164,6 +172,7 @@ class CardController extends Controller
             if(is_null($card)){
                 return $this->error('Not found result for card!', 401);
             }else{
+                $card_member = CardMember::where('card_id', $id)->delete();
                 $card->delete();
                 return $this->success(null, 'Delete card successfully!');
             }
