@@ -2,10 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use OpenApi\Attributes\MediaType;
+use OpenApi\Attributes\Post;
+use OpenApi\Attributes\Property;
+use OpenApi\Attributes\RequestBody;
+use OpenApi\Attributes\Response;
+use OpenApi\Attributes\Schema;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes as OA;
+use App\Traits\HttpResponses;
 
 class WorkspaceController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      *
@@ -80,5 +95,18 @@ class WorkspaceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getWorkspaceByUserID(int $id){
+        try{
+            $workspace = DB::table('workspaces')->join('member_workspace', 'workspaces.id', '=', 'member_workspace.workspace_id')
+            ->where('member_workspace.member_id', '=', $id)
+            ->select('workspaces.id', 'workspaces.name', 'workspaces.description', 'workspaces.created_at', 'workspaces.updated_at')
+            ->get();
+
+            return $this->success($workspace, 'OK');
+        }catch(Exception $error){
+            return $this->success($error, 500);
+        }
     }
 }
