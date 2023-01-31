@@ -757,6 +757,13 @@ class BoardController extends Controller
     public function getWorkspaceByBoard($id_board)
     {
         try {
+            if (DB::table('boards')->where('id', $id_board)->first() == null){
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found board!!!'
+                ]);
+            }
+
             $workspace = Board::with("workspace")->find($id_board)->toArray();
 
             return response()->json(
@@ -780,6 +787,13 @@ class BoardController extends Controller
     public function getCardListsByBoard($id_board)
     {
         try {
+            if (DB::table('boards')->where('id', $id_board)->first() == null){
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found board!!!'
+                ]);
+            }
+
             $cardLists = Board::with("cardLists")->find($id_board)->toArray();
 
             return response()->json(
@@ -803,6 +817,13 @@ class BoardController extends Controller
     public function getMembersByBoard($id_board)
     {
         try {
+            if (DB::table('boards')->where('id', $id_board)->first() == null){
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found board!!!'
+                ]);
+            }
+            
             $members = Board::with("members")->find($id_board)->toArray();
 
             return response()->json(
