@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\CardList;
+use App\Models\Card;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -327,5 +328,15 @@ class CardListController extends Controller
         $card_lists = $board->cardLists;
 
         return $this->success($card_lists);
+    }
+
+    public function getCardInfo(Request $request){
+        $id = $request["list_id"];
+        echo($id);
+        $card_list = CardList::findOrFail($id);
+        $cards = Card::where('list_id', $id)->get();
+        $card_list->cards = $cards;
+
+        return $this->success($card_list);
     }
 }
