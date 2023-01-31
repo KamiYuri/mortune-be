@@ -170,4 +170,16 @@ class CardController extends Controller
             return $this->error('Error when deleting card!', 500);
         }
     }
+
+    public function getCardbyCardList(int $list_id){
+        try{
+            $card_list = CardList::where('id', $list_id)->first();
+            $cards = Card::where('list_id', $list_id)->get();
+            $card_list->cards = $cards;
+            return $this->success($card_list, 'OK');
+        }catch(Exception $error){
+            return $this->error($error, 500);
+        }
+
+    }
 }
