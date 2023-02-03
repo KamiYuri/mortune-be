@@ -3,26 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
-use App\Http\Controllers\Controller;
-use App\Models\Board;
-use App\Models\CardList;
-use App\Models\BoardMember;
-use Exception;
-use Illuminate\Http\JsonResponse;
-use OpenApi\Attributes\MediaType;
-use OpenApi\Attributes\Get;
-use OpenApi\Attributes\Post;
-use OpenApi\Attributes\Put;
-use OpenApi\Attributes\Delete;
-use OpenApi\Attributes\Property;
-use OpenApi\Attributes\RequestBody;
-use OpenApi\Attributes\Response;
-use OpenApi\Attributes\Schema;
-use OpenApi\Attributes\JsonContent;
-use OpenApi\Attributes as OA;
-use App\Traits\HttpResponses;
 
 class BoardController extends Controller
 {
@@ -82,6 +62,8 @@ class BoardController extends Controller
             return $this->error($error, 404);
         }
     }
+
+
     #[post(
         path: "/board",
         operationId: "board_create",
@@ -132,13 +114,13 @@ class BoardController extends Controller
             new Response(response: 500, description: "Failed to create board!!!"),
         ],
     )]
-
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         try {
             $tmpBoard = new Board();
@@ -164,71 +146,6 @@ class BoardController extends Controller
             );
         }
     }
-    // end create
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    // show
-
-    #[get(
-        path: "/board/{id}",
-        operationId: "board_show_by_ID",
-        summary: "Get data a board by ID",
-        requestBody: new RequestBody(
-            content: [
-                new MediaType(
-                    mediaType: "application/json",
-                    schema: new Schema(
-                        properties: [
-                            new Property(property: "id", type: "int"),
-                        ],
-                        example: ["id" => 1]
-                    ),
-                )
-            ]
-        ),
-        tags: ["Board"],
-        responses: [
-            new Response(
-                response: 200,
-                description: "Found board succesfully!!",
-                content: new JsonContent(
-                    properties: [
-                        new Property(property: "board", properties: [
-                            new Property(property: "id", type: "int"),
-                            new Property(property: "title", type: "string"),
-                            new Property(property: "workspace_id", type: "int"),
-                            new Property(property: "closed", type: "int"),
-                            new Property(property: "updated_at", type: "string"),
-                            new Property(property: "created_at", type: "string"),
-                        ], type: "object"),
-                    ],
-                    example: [
-                        "user" => [
-                            "id" => 1,
-                            "title" => "iure",
-                            "workspace_id" => 1,
-                            "closed" => 1,
-                            "updated_at" => "2023-01-08 01:04:24",
-                            "created_at" => "2023-01-08 01:04:24"
-                        ]
-                    ]
-                ),
-            ),
-            new Response(response: 404, description: "Not found board!!!"),
-            new Response(response: 500, description: "Failed to found board!!!"),
-        ],
-    )]
-
 
     /**
      * Display the specified resource.
@@ -238,6 +155,7 @@ class BoardController extends Controller
      */
     public function show($id)
     {
+
         try {
             $data = DB::table('boards')->where('id', $id)->first();
         } catch (Exception $err) {
@@ -261,7 +179,6 @@ class BoardController extends Controller
         }
     }
 
-    // end show
 
     #[put(
         path: "/board/{id}",
@@ -329,9 +246,6 @@ class BoardController extends Controller
         //
     }
 
-
-    // update
-
     /**
      * Update the specified resource in storage.
      *
@@ -362,12 +276,12 @@ class BoardController extends Controller
                         'closed' => $tmpBoard->closed
                     ]
                 );
-                $data = DB::table('boards')->where('id', $id)->first();
+                $board = DB::table('boards')->where('id', $id)->first();
                 return response()->json(
                     [
                         'code' => '200',
                         'message' => 'Update board succesfully!!',
-                        'data' => $data
+                        'data' => $board
                     ]
                 );
             }
@@ -380,11 +294,6 @@ class BoardController extends Controller
             );
         }
     }
-
-    // end update
-
-    // destroy
-
     #[delete(
         path: "/board/{id}",
         operationId: "board_delete_by_ID",
@@ -404,7 +313,16 @@ class BoardController extends Controller
         ),
         tags: ["Board"],
         responses: [
-            new Response(response: 200, description: "Delete board succesfully!!"),
+            new Response(
+                response: 200,
+                description: "Found board succesfully!!",
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "board", properties: [], type: "object"),
+                    ],
+                    example: []
+                ),
+            ),
             new Response(response: 404, description: "Not found board!!!"),
             new Response(response: 500, description: "Failed to delete board!!!"),
         ],
@@ -417,6 +335,213 @@ class BoardController extends Controller
      */
     public function destroy($id)
     {
+        try {
+            $board = DB::table('boards')->where('id', $id)->first();
+
+            if ($board == null) {
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found board!!!'
+                ]);
+            } else {
+
+                Board::where('id', $id)->delete();
+
+                return response()->json(
+                    [
+                        'code' => '200',
+                        'message' => 'Delete board succesfully!!'
+                    ]
+                );
+            }
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to delete board!!!'
+                ]
+            );
+        }
+    }
+
+
+    #[post(
+        path: "/board/boards_of_user/{id_member}",
+        operationId: "boards_of_user",
+        summary: "Get all board of user",
+        requestBody: new RequestBody(
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id_member", type: "int"),
+                        ],
+                        example: ["id_member" => 1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Board"],
+        responses: [
+            new Response(
+                response: 200,
+                description: "Get cards in board of user succesfully!!",
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "board", properties: [
+                            new Property(property: "board_id", type: "int"),
+                            new Property(property: "member_id", type: "int"),
+                            new Property(property: "role", type: "int"),
+                            new Property(property: "updated_at", type: "string"),
+                            new Property(property: "created_at", type: "string"),
+                        ], type: "object"),
+                    ],
+                    example: [
+                        [
+                            "board_id" => 1,
+                            "member_id" => 1,
+                            "role" => 1,
+                            "created_at" => "2023-01-08 01:04:25",
+                            "updated_at" => "2023-01-08 01:04:25"
+                        ],
+                    ]
+                ),
+            ),
+            new Response(response: 404, description: "Not found user!!!"),
+            new Response(response: 500, description: "Failed to delete board!!!"),
+        ],
+    )]
+    public function boards_of_user($id_user)
+    {
+        try {
+            $user = DB::table('users')->where('id', $id_user)->first();
+            if ($user == null) {
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found user!!!'
+                ]);
+            } else {
+                $boards  = DB::table('board_member')->where('member_id', $id_user)->get();
+
+                return response()->json(
+                    [
+                        'code' => '200',
+                        'message' => 'Get cards in board of user succesfully',
+                        'data' => $boards
+                    ]
+                );
+            }
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to show cards in board!!!'
+                ]
+            );
+        }
+    }
+
+
+    #[post(
+        path: "/board/boards_of_user?id_user={id_user}&id_workspace={id_workspace}",
+        operationId: "boards_in_workspace_of_user",
+        summary: "Get all board in workspace of user",
+        requestBody: new RequestBody(
+            content: [
+                new MediaType(
+                    mediaType: "application/json",
+                    schema: new Schema(
+                        properties: [
+                            new Property(property: "id_user", type: "int"),
+                            new Property(property: "id_workspace", type: "int"),
+                        ],
+                        example: ["id_user" => 1, "id_workspace" => 1]
+                    ),
+                )
+            ]
+        ),
+        tags: ["Board"],
+        responses: [
+            new Response(
+                response: 200,
+                description: "Get cards in board of user succesfully!!",
+                content: new JsonContent(
+                    properties: [
+                        new Property(property: "board", properties: [
+                            new Property(property: "board_id", type: "int"),
+                            new Property(property: "member_id", type: "int"),
+                            new Property(property: "role", type: "int"),
+                            new Property(property: "updated_at", type: "string"),
+                            new Property(property: "created_at", type: "string"),
+                        ], type: "object"),
+                    ],
+                    example: [
+                        [
+                            "board_id" => 1,
+                            "member_id" => 1,
+                            "role" => 1,
+                            "created_at" => "2023-01-08 01:04:25",
+                            "updated_at" => "2023-01-08 01:04:25"
+                        ],
+                    ]
+                ),
+            ),
+            new Response(response: 404, description: "Not found user!!!"),
+            new Response(response: 500, description: "Failed to delete board!!!"),
+        ],
+    )]
+    public function boards_in_workspace_of_user(Request $req)
+    {
+        try {
+            $id_user = $req->id_user;
+            $id_workspace = $req->id_workspace;
+            if ($id_user == null || $id_workspace == null)
+                return response()->json([
+                    'code' => '400',
+                    'message' => 'Parameter type is invalid!!!'
+                ]);
+
+            $user = DB::table('users')->where('id', $id_user)->first();
+
+            $workspace = DB::table('workspaces')->where('id', $id_workspace)->first();
+
+            if ($user == null) {
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found user!!!'
+                ]);
+            } else if ($workspace == null) {
+                return response()->json([
+                    'code' => '404',
+                    'message' => 'Not found workspace!!!'
+                ]);
+            } else {
+
+
+                $boards  = DB::table('board_member')
+                    ->select('board_id', 'member_id', 'title', 'closed', 'workspace_id')
+                    ->where('member_id', $id_user)
+                    ->join('boards', 'boards.id', '=', 'board_member.board_id')
+                    ->where('boards.workspace_id', $id_workspace)
+                    ->get();
+
+                return response()->json(
+                    [
+                        'code' => '200',
+                        'message' => 'Get cards in board of user succesfully',
+                        'data' => $boards
+                    ]
+                );
+            }
+        } catch (Exception $error) {
+            return response()->json(
+                [
+                    'code' => '500',
+                    'message' => 'Failed to show cards in board!!!'
+                ]
+            );
+        }
         try {
             $board = DB::table('boards')->where('id', $id)->first();
 

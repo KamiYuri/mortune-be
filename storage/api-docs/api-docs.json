@@ -100,7 +100,7 @@
                 "operationId": "logout",
                 "responses": {
                     "200": {
-                        "description": "Logout successfully."
+                        "description": "Logout a user"
                     },
                     "500": {
                         "description": "Error in logout"
