@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\API;
 
-use App\Http\Helpers\Helper;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,18 +25,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'username' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ];
-    }
-
-    /**
-     * Invoke when validation fail
-     *
-     */
-    public function failedValidation(Validator $validator)
-    {
-        Helper::sendError('Validation error', $validator->errors());
     }
 }

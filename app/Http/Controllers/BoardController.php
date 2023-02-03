@@ -60,16 +60,7 @@ class BoardController extends Controller
                             new Property(property: "created_at", type: "string"),
                         ], type: "object"),
                     ],
-                    example: [
-                        "user" => [
-                            "id" => 1,
-                            "title" => "iure",
-                            "workspace_id" => 1,
-                            "closed" => 1,
-                            "updated_at" => "2023-01-08 01:04:24",
-                            "created_at" => "2023-01-08 01:04:24"
-                        ]
-                    ]
+                    example: []
                 ),
             ),
             new Response(response: 500, description: "Failed to get data board!!!"),
@@ -79,31 +70,18 @@ class BoardController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
         try {
-            $data = DB::table("boards")->get();
-
-            return response()->json(
-                [
-                    'code' => '200',
-                    'message' => 'Get data board succesfully!!',
-                    'data' => $data
-                ]
-            );
+            $user = auth()->user();
+            $boards = $user->boards;
+            return $this->success($boards);
         } catch (Exception $error) {
-            return response()->json(
-                [
-                    'code' => '500',
-                    'message' => 'Failed to get data board!!!'
-                ]
-            );
+            return $this->error($error, 404);
         }
     }
-    // end index
-    // create
     #[post(
         path: "/board",
         operationId: "board_create",
@@ -195,7 +173,7 @@ class BoardController extends Controller
      */
     public function store(Request $request)
     {
-        // 
+        //
     }
 
 
@@ -348,7 +326,7 @@ class BoardController extends Controller
      */
     public function edit($id)
     {
-        // 
+        //
     }
 
 
@@ -557,7 +535,7 @@ class BoardController extends Controller
 
     // end boards_of_user
 
-    // get membership of board 
+    // get membership of board
     #[post(
         path: "/board/get_membership_of_board/{id_board}",
         operationId: "get_membership_of_board",
@@ -639,8 +617,8 @@ class BoardController extends Controller
         }
     }
 
-    // end get membership of board 
-    
+    // end get membership of board
+
 
     // boards_with_workspace_of_user
     #[post(
@@ -708,27 +686,16 @@ class BoardController extends Controller
                     'message' => 'Not found user!!!'
                 ]);
             } else {
-                $data  = DB::table('board_member')
-                    ->select('board_id',  'workspace_id', 'title' ,'role' ,'closed')
+                $data = DB::table('board_member')
+                    ->select('*')
                     ->where('member_id', $id_user)
                     ->join('boards', 'boards.id', '=', 'board_member.board_id')
                     ->get();
 
-                return response()->json(
-                    [
-                        'code' => '200',
-                        'message' => 'Get cards in board of user succesfully',
-                        'data' => $data
-                    ]
-                );
+                return $this->success($data);
             }
         } catch (Exception $error) {
-            return response()->json(
-                [
-                    'code' => '500',
-                    'message' => 'Failed to get data!!!'
-                ]
-            );
+            return $this->error('Failed to get data!', 500);
         }
     }
 
@@ -784,60 +751,19 @@ class BoardController extends Controller
             new Response(response: 500, description: "Failed to get data!!!"),
         ],
     )]
-    public function boards_in_workspace_of_user($id_user, $id_workspace)
+    public function boards_in_workspace_of_user($workspace_id)
     {
         try {
-            if (!is_numeric($id_user) || !is_numeric($id_workspace))
-                return response()->json([
-                    'code' => '400',
-                    'message' => 'Parameter type is invalid!!!'
-                ]);
-            
+            $user = auth()->user();
+            $boards = $user->boards->where("workspace_id", $workspace_id);
 
-            if (DB::table('users')->where('id', $id_user)->first() == null ) {
-                return response()->json([
-                    'code' => '404_1',
-                    'message' => 'Not found user!!!'
-                ]);
-            } else if (DB::table('workspaces')->where('id', $id_workspace)->first() == null) {
-                return response()->json([
-                    'code' => '404_2',
-                    'message' => 'Not found workspace!!!'
-                ]);
-            } else if (DB::table('member_workspace')->where('member_id', $id_user )->where('workspace_id', $id_workspace )->first()==null){
-                return response()->json([
-                    'code' => '205',
-                    'message' => 'User is not member of workspace'
-                ]);
-            } else {
-
-
-                $data  = DB::table('board_member')
-                    ->select('board_id', 'title' ,'role' ,'closed')
-                    ->where('member_id', $id_user)
-                    ->join('boards', 'boards.id', '=', 'board_member.board_id')
-                    ->where('boards.workspace_id', $id_workspace)
-                    ->get();
-
-                return response()->json(
-                    [
-                        'code' => '200',
-                        'message' => 'Get cards in board of user succesfully',
-                        'data' => $data
-                    ]
-                );
-            }
+            return $this->success($boards);
         } catch (Exception $error) {
-            return response()->json(
-                [
-                    'code' => '500',
-                    'message' => 'Failed to get data!!!'
-                ]
-            );
+            return $this->error($error, 404);
         }
     }
     // end boards_in_workspace_of_user
-    
+
     // getWorkspaceByBoard
     #[post(
         path: "/board/getWorkspaceByBoard/{id_board}",
@@ -913,8 +839,8 @@ class BoardController extends Controller
                     'code' => '400',
                     'message' => 'Parameter type is invalid!!!'
                 ]);
-            
-            
+
+
             if (DB::table('boards')->where('id', $id_board)->first() == null){
                 return response()->json([
                     'code' => '404',
@@ -939,7 +865,7 @@ class BoardController extends Controller
                 ]
             );
         }
-    } 
+    }
     // end getWorkspaceByBoard
 
     // getCardListsByBoard
@@ -1019,8 +945,8 @@ class BoardController extends Controller
                     'code' => '400',
                     'message' => 'Parameter type is invalid!!!'
                 ]);
-            
-            
+
+
             if (DB::table('boards')->where('id', $id_board)->first() == null){
                 return response()->json([
                     'code' => '404',
@@ -1045,7 +971,7 @@ class BoardController extends Controller
                 ]
             );
         }
-    } 
+    }
     // end getCardListsByBoard
 
 
@@ -1138,15 +1064,15 @@ class BoardController extends Controller
                     'code' => '400',
                     'message' => 'Parameter type is invalid!!!'
                 ]);
-            
-            
+
+
             if (DB::table('boards')->where('id', $id_board)->first() == null){
                 return response()->json([
                     'code' => '404',
                     'message' => 'Not found board!!!'
                 ]);
             }
-            
+
             $members = Board::with("members")->find($id_board)->toArray();
 
             return response()->json(
@@ -1164,7 +1090,7 @@ class BoardController extends Controller
                 ]
             );
         }
-    } 
+    }
     // end getMembersByBoard
 
     public function addMemberToBoard(Request $request){

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CardListCreated;
+use App\Events\TaskCreated;
+use App\Models\Board;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -160,7 +163,7 @@ class CardListController extends Controller
             $newCardList->archived = $request->archived;
 
             $newCardList->save();
-
+            broadcast(new CardListCreated(auth()->user(), $newCardList))->toOthers();
             return response()->json(['code' => '200',
                 'message' => 'Create card list successfully!']);
 
@@ -318,14 +321,9 @@ class CardListController extends Controller
             return $this->error('Error when deleting card list!', 500);
         }
     }
-
-    //TODO add try-catch
     public function getCardListByBoard(int $board_id) {
         try{
-        
-            $board = Board::find($board_id);
-            $card_lists = $board->cardLists;
-
+            $card_lists = CardList::with('cards')->where('board_id', $board_id)->get();
             return $this->success($card_lists);
         }catch(Exception $error){
             return $this->error($error, 500);

@@ -55,17 +55,17 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request) {
         try {
             $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'username' => $request["username"],
+                'email' => $request["email"],
+                'password' => Hash::make($request["password"])
             ]);
 
             return $this->success([
-                'user' => new UserResource($user),
-                'token' => $user->createToken('API Token')->plainTextToken,
+                'user' => $user,
+                'token' => $user->createToken('API_Token')->plainTextToken,
             ], 'Register successfully.');
-        }catch (Exception) {
-            return $this->error('Error in register', 500);
+        }catch (Exception $error) {
+            return $this->error("Register error.", 500);
         }
     }
 }

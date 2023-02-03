@@ -23,36 +23,32 @@ use Illuminate\Support\Facades\Route;
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('user/authenticated', [UserController::class, "getAuthUser"]);
-    
-    Route::apiResource('board', BoardController::class)->except(['store', 'edit']);
-    Route::apiResource('workspace', WorkspaceController::class)->except(['create', 'edit']);
+    Route::post('/user/authenticated', [UserController::class, "getAuthUser"]);
 
-    Route::resource('/task', TaskController::class);
-    Route::resource('/user', UserController::class);
-    Route::resource('/card_list', CardListController::class);
-    Route::resource('/card', CardController::class);
-
-
-    Route::post('/cardlist/board', [CardListController::class, "getByBoard"]);
-    Route::get('/cardlist/board/{board_id}', [CardListController::class, "getCardListByBoard"]);
-
-    Route::get('/card/cardlist/{list_id}', [CardController::class, "getCardByCardList"]);
-    Route::get('/card/cardlist/{list_id}', [CardController::class, "getCardByCardList"]); 
+    Route::apiResource('/user', UserController::class);
+    Route::apiResource('/workspace', WorkspaceController::class);
+    Route::apiResource('/board', BoardController::class);
+    Route::apiResource('/cardlist', CardListController::class);
+    Route::apiResource('/card', CardController::class);
 
     Route::get('/workspace/user/{id}', [WorkspaceController::class, 'getListUserByIdWs']);
     Route::get('/workspace/user/{id}', [WorkspaceController::class, "getWorkspaceByUserId"]);
     Route::post('/workspace/add_member', [WorkspaceController::class, "addMemberToWorkspace"]);
-    
-    Route::post('board/boards_of_user/{id_user}', [BoardController::class, 'boards_of_user']);
-    Route::post('board/boards_with_workspace_of_user/{id_user}', [BoardController::class, 'boards_with_workspace_of_user']);
-    Route::post('board/boards_in_workspace_of_user/{id_user}/{id_workspace}', [BoardController::class, 'boards_in_workspace_of_user']);
-    Route::post('board/get_membership_of_board/{id_board}', [BoardController::class, 'get_membership_of_board']);
-    Route::post('board/getWorkspaceByBoard/{id_board}', [BoardController::class, 'getWorkspaceByBoard']);
-    Route::post('board/getCardListsByBoard/{id_board}', [BoardController::class, 'getCardListsByBoard']);
-    Route::post('board/getMembersByBoard/{id_board}', [BoardController::class, 'getMembersByBoard']);
-    Route::post('board/add_member', [BoardController::class, 'addMemberToBoard']);
-    Route::post('card/add_member', [CardController::class, 'addMemberToCard']);
+
+    Route::post('/board/boards_of_user/{id_user}', [BoardController::class, 'boards_of_user']);
+    Route::post('/board/boards_with_workspace_of_user/{id_user}', [BoardController::class, 'boards_with_workspace_of_user']);
+    Route::get('/board/workspace/{workspace_id}', [BoardController::class, 'boards_in_workspace_of_user']);
+    Route::post('/board/get_membership_of_board/{id_board}', [BoardController::class, 'get_membership_of_board']);
+    Route::post('/board/getWorkspaceByBoard/{id_board}', [BoardController::class, 'getWorkspaceByBoard']);
+    Route::post('/board/getCardListsByBoard/{id_board}', [BoardController::class, 'getCardListsByBoard']);
+    Route::post('/board/getMembersByBoard/{id_board}', [BoardController::class, 'getMembersByBoard']);
+    Route::post('/board/add_member', [BoardController::class, 'addMemberToBoard']);
+
+    Route::get('/cardlist/board/{board_id}', [CardListController::class, "getCardListByBoard"]);
+
+    Route::get('/card/cardlist/{list_id}', [CardController::class, "getCardByCardList"]);
+    Route::post('/card/add_member', [CardController::class, 'addMemberToCard']);
+
 });
 
 

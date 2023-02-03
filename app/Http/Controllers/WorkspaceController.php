@@ -77,21 +77,11 @@ class WorkspaceController extends Controller
     public function index()
     {
         try {
-            $workspace = Workspace::all();
+            $workspace = auth()->user()->workspaces;
             return $this->success($workspace);
         } catch (\Exception $error) {
             return $this->error($error, 404);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     #[Post(
@@ -142,8 +132,8 @@ class WorkspaceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $req)
     {
@@ -174,7 +164,7 @@ class WorkspaceController extends Controller
         } catch (\Exception $error) {
             return $this->error($error, 404);
         }
-        
+
     }
 
     #[OA\Get(
@@ -224,10 +214,10 @@ class WorkspaceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id)
     {
 
         try {
@@ -236,17 +226,6 @@ class WorkspaceController extends Controller
         } catch (\Exception $error) {
             return $this->error($error, 404);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     #[OA\Put(
@@ -303,9 +282,9 @@ class WorkspaceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $req
+     * @param int $id
+     * @return JsonResponse
      */
     public function update(Request $req, int $id)
     {
@@ -375,7 +354,7 @@ class WorkspaceController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy(int $id)
     {
@@ -438,17 +417,16 @@ class WorkspaceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function getListUserByIdWs($id)
+    public function getListUserByIdWs(int $id)
     {
-
         try {
             //$data = DB::table('workspaces')->find($id);
             $data = DB::table('users')->join('member_workspace', 'users.id', '=', 'member_workspace.member_id')
             ->where('member_workspace.workspace_id', '=', $id)
-            ->select('users.id', 'member_workspace.role', 'users.username', 'users.updated_at', 'users.created_at')->get();    
+            ->select('users.id', 'member_workspace.role', 'users.username', 'users.updated_at', 'users.created_at')->get();
             return $this->success($data);
         } catch (\Exception $error) {
             return $this->error($error, 404);
@@ -494,7 +472,7 @@ class WorkspaceController extends Controller
         }catch(Exception $error){
             return $this->error($error, 500);
         }
-        
+
 
 
     }
