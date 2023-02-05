@@ -92,7 +92,7 @@ class LoginController extends Controller
                 'token' => $token,
             ], 'Login successfully.');
         } catch (Exception $error) {
-            return $this->error('Error in login '.$error, 500);
+            return $this->error($error);
         }
     }
 }

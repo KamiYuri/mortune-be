@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\HttpResponses;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use OpenApi\Attributes\Get;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\MediaType;
+use OpenApi\Attributes\Post;
+use OpenApi\Attributes\Property;
+use OpenApi\Attributes\RequestBody;
+use OpenApi\Attributes\Response;
+use OpenApi\Attributes\Schema;
 
 class BoardController extends Controller
 {
 
     use HttpResponses;
     // index
-    #[get(
+    #[Get(
         path: "/board",
         operationId: "board_index",
         summary: "Get data boards",
@@ -28,7 +40,7 @@ class BoardController extends Controller
         responses: [
             new Response(
                 response: 200,
-                description: "Get data board succesfully!!",
+                description: "Get data board successfully!!",
                 content: new JsonContent(
                     properties: [
                         new Property(property: "board", properties: [
@@ -55,7 +67,7 @@ class BoardController extends Controller
     public function index()
     {
         try {
-            $user = auth()->user();
+            $user = Auth::user();
             $boards = $user->boards;
             return $this->success($boards);
         } catch (Exception $error) {
@@ -64,7 +76,7 @@ class BoardController extends Controller
     }
 
 
-    #[post(
+    #[Post(
         path: "/board",
         operationId: "board_create",
         summary: "Create a new board",

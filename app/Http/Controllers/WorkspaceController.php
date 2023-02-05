@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreWorkspaceRequest;
+use App\Models\Role;
+use App\Models\Workspace;
+use App\Models\WorkspaceMember;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Post;
 use OpenApi\Attributes\Property;
@@ -72,21 +78,12 @@ class WorkspaceController extends Controller
     public function index()
     {
         try {
-            $workspace = Workspace::all();
-            return $this->success($workspace);
-        } catch (\Exception $error) {
-            return $this->error($error, 404);
+            $user = Auth::user();
+            $workspaces = $user->workspaces;
+            return $this->success($workspaces->load("members"));
+        } catch (Exception $error) {
+            return $this->error($error);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     #[Post(
@@ -137,85 +134,27 @@ class WorkspaceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreWorkspaceRequest $request
      * @return JsonResponse
      */
-    public function store(Request $req)
+    public function store(StoreWorkspaceRequest $request)
     {
         try {
-            if(is_null($req->name) || is_null($req->description)){
-                return $this->error("Missing fields!", 401);
-            }
+            $workspace = Workspace::create([
+                "name" => $request["workspaceName"],
+                "description" => $request["workspaceDesc"],
+            ]);
 
-            $ws = new WorkSpace;
-            $ws->name = $req->name;
-            $ws->description = $req->description;
-            $ws->created_at = now();
-            $ws->updated_at = now();
+            $workspace->members()->attach(Auth::id(), [
+                "role" => 1,
+            ]);
 
-            $ws->save();//luu dl vaof database
-            $user_id = auth()->id();
-            $ws_member = new WorkspaceMember;
-            $ws_member->member_id = $user_id;
-            $ws_member->workspace_id = $ws->id;
-            $ws_member->role = 1;
-            $ws_member->created_at = now();
-            $ws_member->updated_at = now();
-            $ws_member->save();
-            //gui ve dl sau khi them
-
-
-            return $this->success($ws, 'OK');
-        } catch (\Exception $error) {
-            return $this->error($error, 404);
+            return $this->success($workspace->load('members'));
+        } catch (Exception $error) {
+            return $this->error($error);
         }
-
     }
 
-    #[OA\Get(
-        path: "/workspace/{id}", operationId: "workspaceGetById", summary: "Get data workspace by id",
-        requestBody: new RequestBody
-        (
-            content: [
-                new MediaType(
-                    mediaType: "application/json",
-                    schema: new Schema(
-                        properties: [
-                            new Property(property: "id", type: "int")
-                        ],
-                        example: ["id"=>1]
-                    ),
-                )
-            ]
-        ),
-        tags: ["Workspace"],
-        responses: [
-            new Response(response: 200, description: "Get a workspace by id successfully", content: new JsonContent
-                (
-                    properties:
-                    [
-                        new Property(property: "workspace", properties: [
-                            new Property(property: "id", type: "int"),
-                            new Property(property: "name", type: "string"),
-                            new Property(property: "description", type: "string"),
-                            new Property(property: "updated_at", type: "string"),
-                            new Property(property: "created_at", type: "string"),
-                        ], type: "object")
-                    ],
-                    example:
-                    [
-                        "workspace" => [
-                            "id" => 1,
-                            "name" => "abc",
-                            "description" => "hjhjshjdyuy uysuyu uyu",
-                            "updated_at" => "2022-11-09T17:55:48.000000Z",
-                            "created_at" => "2022-11-09T17:55:48.000000Z"]
-                    ]
-                ),
-            ),
-            new Response(response: 500, description: "Error in get workspace by id"),
-        ],
-    )]
     #[OA\Get(
         path: "/workspace/{id}", operationId: "workspaceGetById", summary: "Get data workspace by id",
         requestBody: new RequestBody
@@ -272,7 +211,7 @@ class WorkspaceController extends Controller
         try {
             $data = DB::table('workspaces')->find($id);
             return $this->success($data);
-        } catch (\Exception $error) {
+        } catch (Exception $error) {
             return $this->error($error, 404);
         }
     }
@@ -469,83 +408,10 @@ class WorkspaceController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy(int $id)
-    {
-        try {
-            $deleted = DB::table('workspaces')->where('id', '=', $id)->delete();
-            //gui ve dl sau khi them
-            $data = DB::table("workspaces")->get();
-            return $this->success($data);
-        } catch (\Exception $error) {
-            return $this->error($error, 404);
-        }
-    }
-
-    //get list user by workspace id
-    #[OA\Get(
-        path: "/workspace/user{id}", operationId: "getListUserByIdWs", summary: "Get data user by id",
-        requestBody: new RequestBody
-        (
-            content: [
-                new MediaType(
-                    mediaType: "application/json",
-                    schema: new Schema(
-                        properties: [
-                            new Property(property: "id", type: "int")
-                        ],
-                        example: ["id"=>1]
-                    ),
-                )
-            ]
-        ),
-        tags: ["Workspace"],
-        responses: [
-            new Response(response: 200, description: "Get list user by id successfully", content: new JsonContent
-                (
-                    properties:
-                    [
-                        new Property(property: "workspace", properties: [
-                            new Property(property: "id", type: "int"),
-                            new Property(property: "role", type: "int"),
-                            new Property(property: "name", type: "string"),
-                            new Property(property: "updated_at", type: "string"),
-                            new Property(property: "created_at", type: "string"),
-                        ], type: "object")
-                    ],
-                    example:
-                    [
-                        "workspace" => [
-                            "id" => 1,
-                            "role" => 1,
-                            "name" => "hjhjshjdyuy uysuyu uyu",
-                            "updated_at" => "2022-11-09T17:55:48.000000Z",
-                            "created_at" => "2022-11-09T17:55:48.000000Z"]
-                    ]
-                ),
-            ),
-            new Response(response: 500, description: "Error in get user by id ws"),
-        ],
-    )]
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function getListUserByIdWs($id)
+    public function getListUserByIdWs(int $id)
     {
 
         try {
-            //$data = DB::table('workspaces')->find($id);
-            $data = DB::table('users')->join('member_workspace', 'users.id', '=', 'member_workspace.member_id')
-            ->where('member_workspace.workspace_id', '=', $id)
-            ->select('users.id', 'member_workspace.role', 'users.username', 'users.updated_at', 'users.created_at')->get();
-            return $this->success($data);
-        } catch (\Exception $error) {
-            return $this->error($error, 404);
-        }
-        try {
-            //$data = DB::table('workspaces')->find($id);
             $data = DB::table('users')->join('member_workspace', 'users.id', '=', 'member_workspace.member_id')
             ->where('member_workspace.workspace_id', '=', $id)
             ->select('users.id', 'member_workspace.role', 'users.username', 'users.updated_at', 'users.created_at')->get();
@@ -582,7 +448,7 @@ class WorkspaceController extends Controller
                 return $this->error('Member already in this workspace!', 402);
             }
 
-            $ws_member = new WorkspaceMember;
+            $ws_member = new WorkspaceMember();
             $ws_member->member_id = $user_id;
             $ws_member->workspace_id = $workspace_id;
             $ws_member->role = 2;
@@ -594,8 +460,5 @@ class WorkspaceController extends Controller
         }catch(Exception $error){
             return $this->error($error, 500);
         }
-
-
-
     }
 }

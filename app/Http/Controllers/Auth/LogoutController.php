@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
-use Request;
 
 class LogoutController extends Controller
 {
@@ -33,7 +32,7 @@ class LogoutController extends Controller
 
             return $this->success(null, "Logout successfully.");
         } catch (Exception $error) {
-            return $this->error("Error in logout ".$error, 500);
+            return $this->error($error);
         }
     }
 }

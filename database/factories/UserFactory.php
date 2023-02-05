@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Laravolt\Avatar\Avatar;
 
 /**
  * @extends Factory<User>

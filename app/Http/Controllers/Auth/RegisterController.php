@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\RegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Laravolt\Avatar\Facade as Avatar;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Post;
 use OpenApi\Attributes\Property;
@@ -60,12 +61,22 @@ class RegisterController extends Controller
                 'password' => Hash::make($request["password"])
             ]);
 
+            $path = "avatars/".$user->id."/";
+
+            if(!File::isDirectory($path))
+                File::makeDirectory($path, 0777, true,true);
+
+            $avatar_file_name = time().'.png';
+            Avatar::create($request["username"])->save(public_path($path.$avatar_file_name));
+
+            $user->update(["avatar_url" => "avatars/".$user->id."/".$avatar_file_name]);
+
             return $this->success([
                 'user' => $user,
                 'token' => $user->createToken('API_Token')->plainTextToken,
             ], 'Register successfully.');
-        }catch (Exception $error) {
-            return $this->error("Register error.", 500);
+        } catch (Exception $error) {
+            return $this->error($error);
         }
     }
 }

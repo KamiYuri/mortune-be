@@ -16,8 +16,6 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::view('/', 'info');
 
 Route::post('login', [LoginController::class, 'login'])->name('login');

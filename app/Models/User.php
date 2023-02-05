@@ -22,7 +22,7 @@ class User extends Authenticatable
     /**
      * @var array
      */
-    protected $fillable = ['username', 'password', 'email'];
+    protected $fillable = ['username', 'password', 'email', 'avatar_url'];
 
     /**
      * @return BelongsToMany
